@@ -4,8 +4,8 @@ namespace hulang\tool;
 
 /**
  * 无限分级类
- *
  */
+
 class Tree
 {
     /** 子孙树

@@ -1,9 +1,10 @@
 <?php
+
+namespace hulang\tool;
+
 /*
 ** 文件及文件夹处理类
 */
-
-namespace hulang\tool;
 
 class File
 {
