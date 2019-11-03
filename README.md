@@ -3,4 +3,4 @@
 
 安装
 
-`composer require hulang/php-tree`
+`composer require hulang/php-tool`

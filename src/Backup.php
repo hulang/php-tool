@@ -3,7 +3,6 @@
 namespace hulang\tool;
 
 use PDO;
-use Exception;
 
 if (!session_id()) {
     session_start();
