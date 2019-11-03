@@ -1,9 +1,9 @@
 {
     "name": "hulang/php-tool",
     "description": "php library",
-	"license": "Apache-2.0",
+    "license": "Apache-2.0",
     "type": "library",
-	"version": "1.0.0",
+    "version": "1.0.0",
     "keywords": [
         "php",
         "library"
@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "hulang\\tool\\": "src/"  
+            "hulang\\tool\\": "src/"
         }
     }
 }
