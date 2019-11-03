@@ -25,11 +25,6 @@ class Backup
      */
     private $_backdir = '';
     /**
-     * 排除表
-     * @var array 
-     */
-    private $_exclusionTablelist = [];
-    /**
      * 表集合
      * @var array 
      */
@@ -88,11 +83,6 @@ class Backup
         $this->_volsize = $size;
         return $this;
     }
-    public function setexclusiontablelist($tablelist = [])
-    {
-        $this->_exclusionTablelist = $tablelist;
-        return $this;
-    }
     public function settablelist($tablelist = [])
     {
         $this->_tablelist = $tablelist;
@@ -104,9 +94,7 @@ class Backup
             $rs = $this->_pdo->query('show table status');
             $res = $rs->fetchAll(PDO::FETCH_ASSOC);
             foreach ($res as $r) {
-                if (!empty($this->_exclusionTablelist) && !in_array($r['Name'], $this->_exclusionTablelist)) {
-                    $this->_tablelist[] = $r['Name'];
-                }
+                $this->_tablelist[] = $r['Name'];
             }
         }
         return $this->_tablelist;
