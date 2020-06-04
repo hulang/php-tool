@@ -11,7 +11,7 @@ class File
     /**
      * 创建目录
      * @param $dir     string   目录名
-     * @return boolean true 成功， false 失败
+     * @return boolean true 成功/false 失败
      */
     public static function mk_dir($dir)
     {
@@ -47,7 +47,7 @@ class File
      * @param $filename  string  文件名
      * @param $writetext string  文件内容
      * @param $openmod 	 string  打开方式
-     * @return boolean true 成功, false 失败
+     * @return boolean true 成功/false 失败
      */
     public static function write_file($filename, $writetext, $openmod = 'w')
     {
@@ -63,7 +63,7 @@ class File
     /**
      * 删除文件
      * @param  $filename string  文件名
-     * @return boolean true 成功, false 失败
+     * @return boolean true 成功/false 失败
      */
     public static function del_file($filename)
     {
@@ -77,7 +77,7 @@ class File
     /**
      * 删除目录
      * @param $dirName   string   原目录
-     * @return boolean true 成功, false 失败
+     * @return boolean true 成功/false 失败
      */
     public static function del_dir($dirName)
     {
@@ -102,7 +102,7 @@ class File
      * 复制目录
      * @param $surDir   string   原目录
      * @param $toDir  	string   目标目录
-     * @return boolean true 成功, false 失败
+     * @return boolean true 成功/false 失败
      */
     public static function copy_dir($surDir, $toDir)
     {
@@ -191,7 +191,7 @@ class File
     /**
      * 检测是否为空文件夹
      * @param $dir  string   目录名
-     * @return boolean true 空， fasle 不为空
+     * @return boolean true 空/fasle 不为空
      */
     public static function empty_dir($dir)
     {
@@ -232,7 +232,7 @@ class File
         return $byte;
     }
     /**
-     * 辅助函数 round_up()，该函数用来取舍小数点位数的，四舍五入
+     * 辅助函数 round_up(),该函数用来取舍小数点位数的,四舍五入
      */
     public static function round_dp($num, $dp)
     {

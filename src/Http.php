@@ -70,7 +70,6 @@ class Http
         // 
         $defaults[CURLOPT_CONNECTTIMEOUT] = 30;
         $defaults[CURLOPT_TIMEOUT] = 200;
-
         // disable 100-continue
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
 

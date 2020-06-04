@@ -11,11 +11,10 @@ class Time
      */
     public static function today()
     {
-        list($y, $m, $d) = explode('-', date('Y-m-d'));
-        return [
-            mktime(0, 0, 0, $m, $d, $y),
-            mktime(23, 59, 59, $m, $d, $y)
-        ];
+        [$y, $m, $d] = explode('-', date('Y-m-d'));
+        $begin = mktime(0, 0, 0, $m, $d, $y);
+        $end = mktime(23, 59, 59, $m, $d, $y);
+        return [$begin, $end];
     }
 
     /**
@@ -26,10 +25,9 @@ class Time
     public static function yesterday()
     {
         $yesterday = date('d') - 1;
-        return [
-            mktime(0, 0, 0, date('m'), $yesterday, date('Y')),
-            mktime(23, 59, 59, date('m'), $yesterday, date('Y'))
-        ];
+        $begin = mktime(0, 0, 0, date('m'), $yesterday, date('Y'));
+        $end = mktime(23, 59, 59, date('m'), $yesterday, date('Y'));
+        return [$begin, $end];
     }
 
     /**
@@ -39,11 +37,14 @@ class Time
      */
     public static function week()
     {
-        list($y, $m, $d, $w) = explode('-', date('Y-m-d-w'));
-        if ($w == 0) $w = 7; //修正周日的问题
-        return [
-            mktime(0, 0, 0, $m, $d - $w + 1, $y), mktime(23, 59, 59, $m, $d - $w + 7, $y)
-        ];
+        [$y, $m, $d, $w] = explode('-', date('Y-m-d-w'));
+        // 修正周日的问题
+        if ($w == 0) {
+            $w = 7;
+        }
+        $begin = mktime(0, 0, 0, $m, $d - $w + 1, $y);
+        $end = mktime(23, 59, 59, $m, $d - $w + 7, $y);
+        return [$begin, $end];
     }
 
     /**
@@ -54,10 +55,9 @@ class Time
     public static function lastWeek()
     {
         $timestamp = time();
-        return [
-            strtotime(date('Y-m-d', strtotime("last week Monday", $timestamp))),
-            strtotime(date('Y-m-d', strtotime("last week Sunday", $timestamp))) + 24 * 3600 - 1
-        ];
+        $begin = strtotime(date('Y-m-d', strtotime("last week Monday", $timestamp)));
+        $end = strtotime(date('Y-m-d', strtotime("last week Sunday", $timestamp))) + 24 * 3600 - 1;
+        return [$begin, $end];
     }
 
     /**
@@ -67,11 +67,10 @@ class Time
      */
     public static function month()
     {
-        list($y, $m, $t) = explode('-', date('Y-m-t'));
-        return [
-            mktime(0, 0, 0, $m, 1, $y),
-            mktime(23, 59, 59, $m, $t, $y)
-        ];
+        [$y, $m, $t] = explode('-', date('Y-m-t'));
+        $begin = mktime(0, 0, 0, $m, 1, $y);
+        $end = mktime(23, 59, 59, $m, $t, $y);
+        return [$begin, $end];
     }
 
     /**
@@ -85,7 +84,6 @@ class Time
         $m = date('m');
         $begin = mktime(0, 0, 0, $m - 1, 1, $y);
         $end = mktime(23, 59, 59, $m - 1, date('t', $begin), $y);
-
         return [$begin, $end];
     }
 
@@ -97,10 +95,9 @@ class Time
     public static function year()
     {
         $y = date('Y');
-        return [
-            mktime(0, 0, 0, 1, 1, $y),
-            mktime(23, 59, 59, 12, 31, $y)
-        ];
+        $begin = mktime(0, 0, 0, 1, 1, $y);
+        $end = mktime(23, 59, 59, 12, 31, $y);
+        return [$begin, $end];
     }
 
     /**
@@ -111,14 +108,14 @@ class Time
     public static function lastYear()
     {
         $year = date('Y') - 1;
-        return [
-            mktime(0, 0, 0, 1, 1, $year),
-            mktime(23, 59, 59, 12, 31, $year)
-        ];
+        $begin = mktime(0, 0, 0, 1, 1, $year);
+        $end = mktime(23, 59, 59, 12, 31, $year);
+        return [$begin, $end];
     }
 
     public static function dayOf()
-    { }
+    {
+    }
 
     /**
      * 获取几天前零点到现在/昨日结束的时间戳
@@ -131,13 +128,10 @@ class Time
     {
         $end = time();
         if (!$now) {
-            list($foo, $end) = self::yesterday();
+            [$foo, $end] = self::yesterday();
         }
-
-        return [
-            mktime(0, 0, 0, date('m'), date('d') - $day, date('Y')),
-            $end
-        ];
+        $begin = mktime(0, 0, 0, date('m'), date('d') - $day, date('Y'));
+        return [$begin, $end];
     }
 
     /**
