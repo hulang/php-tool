@@ -16,7 +16,6 @@ class Time
         $end = mktime(23, 59, 59, $m, $d, $y);
         return [$begin, $end];
     }
-
     /**
      * 返回昨日开始和结束的时间戳
      *
@@ -29,7 +28,6 @@ class Time
         $end = mktime(23, 59, 59, date('m'), $yesterday, date('Y'));
         return [$begin, $end];
     }
-
     /**
      * 返回本周开始和结束的时间戳
      *
@@ -46,7 +44,6 @@ class Time
         $end = mktime(23, 59, 59, $m, $d - $w + 7, $y);
         return [$begin, $end];
     }
-
     /**
      * 返回上周开始和结束的时间戳
      *
@@ -59,7 +56,6 @@ class Time
         $end = strtotime(date('Y-m-d', strtotime("last week Sunday", $timestamp))) + 24 * 3600 - 1;
         return [$begin, $end];
     }
-
     /**
      * 返回本月开始和结束的时间戳
      *
@@ -72,7 +68,6 @@ class Time
         $end = mktime(23, 59, 59, $m, $t, $y);
         return [$begin, $end];
     }
-
     /**
      * 返回上个月开始和结束的时间戳
      *
@@ -86,7 +81,6 @@ class Time
         $end = mktime(23, 59, 59, $m - 1, date('t', $begin), $y);
         return [$begin, $end];
     }
-
     /**
      * 返回今年开始和结束的时间戳
      *
@@ -99,7 +93,6 @@ class Time
         $end = mktime(23, 59, 59, 12, 31, $y);
         return [$begin, $end];
     }
-
     /**
      * 返回去年开始和结束的时间戳
      *
@@ -112,11 +105,6 @@ class Time
         $end = mktime(23, 59, 59, 12, 31, $year);
         return [$begin, $end];
     }
-
-    public static function dayOf()
-    {
-    }
-
     /**
      * 获取几天前零点到现在/昨日结束的时间戳
      *
@@ -133,7 +121,6 @@ class Time
         $begin = mktime(0, 0, 0, date('m'), date('d') - $day, date('Y'));
         return [$begin, $end];
     }
-
     /**
      * 返回几天前的时间戳
      *
@@ -145,7 +132,6 @@ class Time
         $nowTime = time();
         return $nowTime - self::daysToSecond($day);
     }
-
     /**
      * 返回几天后的时间戳
      *
@@ -157,7 +143,6 @@ class Time
         $nowTime = time();
         return $nowTime + self::daysToSecond($day);
     }
-
     /**
      * 天数转换成秒数
      *
@@ -168,7 +153,6 @@ class Time
     {
         return $day * 86400;
     }
-
     /**
      * 周数转换成秒数
      *

@@ -19,11 +19,13 @@ class Tree
     public static function getSubTree($data, $parent = 'pid', $son = 'id', $pid = 0, $lv = 0)
     {
         $tmp = [];
-        foreach ($data as $k => $v) {
-            if ($v[$parent] == $pid) {
-                $v['lv'] = $lv;
-                $tmp[] = $v;
-                $tmp = array_merge($tmp, self::getSubTree($data, $parent, $son, $v[$son], $lv + 1));
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                if ($v[$parent] == $pid) {
+                    $v['lv'] = $lv;
+                    $tmp[] = $v;
+                    $tmp = array_merge($tmp, self::getSubTree($data, $parent, $son, $v[$son], $lv + 1));
+                }
             }
         }
         return $tmp;
@@ -39,10 +41,12 @@ class Tree
     public static function getSubTreeList($data, $parent = 'pid', $son = 'id', $pid = 0, $child = 'child')
     {
         $tmp = [];
-        foreach ($data as $k => $v) {
-            if ($v[$parent] == $pid) {
-                $v[$child] = self::getSubTreeList($data, $parent, $son, $v[$son], $child);
-                $tmp[] = $v;
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                if ($v[$parent] == $pid) {
+                    $v[$child] = self::getSubTreeList($data, $parent, $son, $v[$son], $child);
+                    $tmp[] = $v;
+                }
             }
         }
         return $tmp;
@@ -59,12 +63,14 @@ class Tree
     public static function getOneMergeTree($data, $html = '├─', $pid = 0, $level = 0, $parent = 'pid', $son = 'id')
     {
         $arr = [];
-        foreach ($data as $k => $v) {
-            if ($v[$parent] == $pid) {
-                $v['level'] = $level + 1;
-                $v['html'] = str_repeat($html, $level);
-                $arr[] = $v;
-                $arr = array_merge($arr, self::getOneMergeTree($data, $html, $v[$son], $level + 1, $parent, $son));
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                if ($v[$parent] == $pid) {
+                    $v['level'] = $level + 1;
+                    $v['html'] = str_repeat($html, $level);
+                    $arr[] = $v;
+                    $arr = array_merge($arr, self::getOneMergeTree($data, $html, $v[$son], $level + 1, $parent, $son));
+                }
             }
         }
         return $arr;
@@ -78,10 +84,12 @@ class Tree
     public static function getMultidMergeTree($data, $pid = 0, $name = 'child')
     {
         $arr = [];
-        foreach ($data as $k => $v) {
-            if ($v['pid'] == $pid) {
-                $v[$name] = self::getMultidMergeTree($data, $v['id'], $name);
-                $arr[] = $v;
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                if ($v['pid'] == $pid) {
+                    $v[$name] = self::getMultidMergeTree($data, $v['id'], $name);
+                    $arr[] = $v;
+                }
             }
         }
         return $arr;
@@ -140,10 +148,12 @@ class Tree
     public static function getParents($data, $id, $parent = 'pid', $son = 'id')
     {
         $arr = [];
-        foreach ($data as $k => $v) {
-            if ($v[$son] == $id) {
-                $arr[] = $v;
-                $arr = array_merge(self::getParents($data, $v[$parent], $parent, $son), $arr);
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                if ($v[$son] == $id) {
+                    $arr[] = $v;
+                    $arr = array_merge(self::getParents($data, $v[$parent], $parent, $son), $arr);
+                }
             }
         }
         return $arr;
@@ -158,10 +168,12 @@ class Tree
     public static function getParentsIds($data, $id, $parent = 'pid', $son = 'id')
     {
         $arr = [];
-        foreach ($data as $k => $v) {
-            if ($v[$son] == $id && $v[$parent] != 0) {
-                $arr[] = $v[$parent];
-                $arr = array_merge(self::getParentsIds($data, $v[$parent], $parent, $son), $arr);
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                if ($v[$son] == $id && $v[$parent] != 0) {
+                    $arr[] = $v[$parent];
+                    $arr = array_merge(self::getParentsIds($data, $v[$parent], $parent, $son), $arr);
+                }
             }
         }
         return $arr;
@@ -176,10 +188,12 @@ class Tree
     public static function getChildsId($data, $pid, $parent = 'pid', $son = 'id')
     {
         $arr = [];
-        foreach ($data as $k => $v) {
-            if ($v[$parent] == $pid) {
-                $arr[] = $v[$son];
-                $arr = array_merge($arr, self::getChildsId($data, $v[$son], $parent, $son));
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                if ($v[$parent] == $pid) {
+                    $arr[] = $v[$son];
+                    $arr = array_merge($arr, self::getChildsId($data, $v[$son], $parent, $son));
+                }
             }
         }
         return $arr;
@@ -194,10 +208,12 @@ class Tree
     public static function getChilds($data, $pid, $parent = 'pid', $son = 'id')
     {
         $arr = [];
-        foreach ($data as $k => $v) {
-            if ($v[$parent] == $pid) {
-                $arr[] = $v;
-                $arr = array_merge($arr, self::getChilds($data, $v[$son], $parent, $son));
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                if ($v[$parent] == $pid) {
+                    $arr[] = $v;
+                    $arr = array_merge($arr, self::getChilds($data, $v[$son], $parent, $son));
+                }
             }
         }
         return $arr;

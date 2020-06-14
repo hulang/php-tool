@@ -20,7 +20,6 @@ class Http
         $req = self::sendRequest($url, $params, 'POST', $options);
         return $req['ret'] ? $req['msg'] : '';
     }
-
     /**
      * 发送一个GET请求
      * @param string $url     请求URL
@@ -33,7 +32,6 @@ class Http
         $req = self::sendRequest($url, $params, 'GET', $options);
         return $req['ret'] ? $req['msg'] : '';
     }
-
     /**
      * CURL发送Request请求,含POST和REQUEST
      * @param string $url     请求的链接
@@ -47,7 +45,6 @@ class Http
         $method = strtoupper($method);
         $protocol = parse_url($url);
         $query_string = is_array($params) ? http_build_query($params) : $params;
-
         $ch = curl_init();
         $defaults = [];
         if ($method == 'GET') {
@@ -62,7 +59,6 @@ class Http
             }
             $defaults[CURLOPT_POSTFIELDS] = $query_string;
         }
-
         $defaults[CURLOPT_HEADER] = false;
         $defaults[CURLOPT_USERAGENT] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3829.0 Safari/537.36 Edg/77.0.197.1';
         $defaults[CURLOPT_FOLLOWLOCATION] = true;
@@ -72,17 +68,13 @@ class Http
         $defaults[CURLOPT_TIMEOUT] = 200;
         // disable 100-continue
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
-
         if ($protocol['scheme'] == 'https') {
             $defaults[CURLOPT_SSL_VERIFYPEER] = false;
             $defaults[CURLOPT_SSL_VERIFYHOST] = false;
         }
-
         curl_setopt_array($ch, (array) $options + $defaults);
-
         $ret = curl_exec($ch);
         $err = curl_error($ch);
-
         if (false === $ret || !empty($err)) {
             $errno = curl_errno($ch);
             $info = curl_getinfo($ch);
@@ -95,12 +87,8 @@ class Http
             ];
         }
         curl_close($ch);
-        return [
-            'ret' => true,
-            'msg' => $ret,
-        ];
+        return ['ret' => true, 'msg' => $ret];
     }
-
     /**
      * 异步发送一个请求
      * @param string $url    请求的链接
@@ -153,7 +141,6 @@ class Http
         fclose($fp);
         return true;
     }
-
     /**
      * 发送文件到客户端
      * @param string $file

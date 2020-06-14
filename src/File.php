@@ -169,11 +169,9 @@ class File
             $dir_arr['path'] = $file->getPath();
             $dir_arr['perms'] = $file->getPerms();
             $dir_arr['tp'] = $file->getType();
-            $dir_arr['is_dot'] = $file->isDot();
             $dir_arr['is_executable'] = $file->isExecutable();
             $dir_arr['is_file'] = $file->isFile();
             $dir_arr['is_link'] = $file->isLink();
-            $dir_arr['key'] = $file->key();
 
             $list[] = $dir_arr;
         }
