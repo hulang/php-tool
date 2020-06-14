@@ -174,8 +174,6 @@ class File
             $dir_arr['is_file'] = $file->isFile();
             $dir_arr['is_link'] = $file->isLink();
             $dir_arr['key'] = $file->key();
-            $dir_arr['next'] = $file->next();
-            $dir_arr['rewind'] = $file->rewind();
 
             $list[] = $dir_arr;
         }
