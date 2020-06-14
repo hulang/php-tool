@@ -143,7 +143,7 @@ class File
         $path = realpath($path);
         $flag = \FilesystemIterator::KEY_AS_FILENAME;
         $glob = new \FilesystemIterator($path, $flag);
-        $list = array();
+        $list = [];
         foreach ($glob as $name => $file) {
             $dir_arr = [];
             $dir_arr['name'] = self::convertEncoding($file->getFilename());
@@ -156,12 +156,27 @@ class File
                 $dir_arr['size'] = self::fileSizeFormat($file->getSize());
                 $dir_arr['ext'] = $file->getExtension();
             }
-            $dir_arr['path'] = $file->getPathname();
+            $dir_arr['path_name'] = $file->getPathname();
             $dir_arr['atime'] = $file->getATime();
             $dir_arr['mtime'] = $file->getMTime();
             $dir_arr['ctime'] = $file->getCTime();
             $dir_arr['is_readable'] = $file->isReadable();
             $dir_arr['is_writeable'] = $file->isWritable();
+            $dir_arr['base_name'] = $file->getBasename();
+            $dir_arr['group'] = $file->getGroup();
+            $dir_arr['inode'] = $file->getInode();
+            $dir_arr['owner'] = $file->getOwner();
+            $dir_arr['path'] = $file->getPath();
+            $dir_arr['perms'] = $file->getPerms();
+            $dir_arr['tp'] = $file->getType();
+            $dir_arr['is_dot'] = $file->isDot();
+            $dir_arr['is_executable'] = $file->isExecutable();
+            $dir_arr['is_file'] = $file->isFile();
+            $dir_arr['is_link'] = $file->isLink();
+            $dir_arr['key'] = $file->key();
+            $dir_arr['next'] = $file->next();
+            $dir_arr['rewind'] = $file->rewind();
+
             $list[] = $dir_arr;
         }
         $list == 1 ? sort($list) : rsort($list);
