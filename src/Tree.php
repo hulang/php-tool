@@ -106,7 +106,9 @@ class Tree
     {
         $tmp = [];
         if (!empty($data)) {
+            // 父级
             $fu = [];
+            // 子级
             $zi = [];
             foreach ($data as $k => $v) {
                 if ($v[$parent] == 0) {
@@ -115,22 +117,30 @@ class Tree
                     $zi[] = $v;
                 }
             }
+            // 返回数组中子级某一列的值
             $arr = array_column($zi, $son);
+            // 子级排序方式
             if ($sort_type == 1) {
                 array_multisort($arr, SORT_ASC, $zi);
             } else {
                 array_multisort($arr, SORT_DESC, $zi);
             }
+            // 循环子级
             foreach ($zi as $k => $v) {
+                // 搜索
                 $key = array_search($v[$parent], $arr);
                 if ($key !== false) {
+                    // 填充子级
                     $zi[$k][$parent] = $zi[$key][$parent];
                 }
             }
+            // 返回数组中父级某一列的值
             $array = array_column($fu, $son);
             foreach ($zi as $k => $v) {
+                // 搜索
                 $key = array_search($v[$parent], $array);
                 if ($key !== false) {
+                    // 填充父级
                     $fu[$key][$name][] = $v;
                 }
             }

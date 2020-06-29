@@ -190,10 +190,11 @@ class File
         $dirsize = 0;
         while (false !== ($folderorfile = readdir($dirlist))) {
             if ($folderorfile != '.' && $folderorfile != '..') {
-                if (is_dir("{$dir}/{$folderorfile}")) {
-                    $dirsize += self::getDirSize("{$dir}/{$folderorfile}");
+                $new_dir = $dir . '/' . $folderorfile;
+                if (is_dir($new_dir)) {
+                    $dirsize += self::getDirSize($new_dir);
                 } else {
-                    $dirsize += filesize("{$dir}/{$folderorfile}");
+                    $dirsize += filesize($new_dir);
                 }
             }
         }

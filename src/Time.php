@@ -112,10 +112,10 @@ class Time
      * @param bool $now 返回现在或者昨天结束时间戳
      * @return array
      */
-    public static function dayToNow($day = 1, $now = true)
+    public static function dayToNow($day = 1, $now = 1)
     {
         $end = time();
-        if (!$now) {
+        if ($now == 1) {
             [$foo, $end] = self::yesterday();
         }
         $begin = mktime(0, 0, 0, date('m'), date('d') - $day, date('Y'));
