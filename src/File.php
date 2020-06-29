@@ -151,8 +151,6 @@ class File
                 $dir_arr['type'] = 'dir';
                 $dir_arr['size'] = self::fileSizeFormat(self::getDirSize($file->getPathname()));
                 $dir_arr['ext'] = '';
-                // 递归
-                $dir_arr['file'] = self::getFolder($file->getPathname());
             } else {
                 $dir_arr['type'] = 'file';
                 $dir_arr['size'] = self::fileSizeFormat($file->getSize());
