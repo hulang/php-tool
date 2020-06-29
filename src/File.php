@@ -134,7 +134,7 @@ class File
      * @param $path   string   原目录
      * @return unknown
      */
-    public static function getFolder($path)
+    public static function getFolder($path = '')
     {
         if (!is_dir($path)) {
             return null;
@@ -144,13 +144,15 @@ class File
         $flag = \FilesystemIterator::KEY_AS_FILENAME;
         $glob = new \FilesystemIterator($path, $flag);
         $list = [];
-        foreach ($glob as $name => $file) {
+        foreach ($glob as $k => $file) {
             $dir_arr = [];
             $dir_arr['name'] = self::convertEncoding($file->getFilename());
             if ($file->isDir()) {
                 $dir_arr['type'] = 'dir';
                 $dir_arr['size'] = self::fileSizeFormat(self::getDirSize($file->getPathname()));
                 $dir_arr['ext'] = '';
+                // 递归
+                $dir_arr['file'] = self::getFolder($file->getPathname());
             } else {
                 $dir_arr['type'] = 'file';
                 $dir_arr['size'] = self::fileSizeFormat($file->getSize());
@@ -172,8 +174,7 @@ class File
             $dir_arr['is_executable'] = $file->isExecutable();
             $dir_arr['is_file'] = $file->isFile();
             $dir_arr['is_link'] = $file->isLink();
-
-            $list[] = $dir_arr;
+            $list[$k] = $dir_arr;
         }
         $list == 1 ? sort($list) : rsort($list);
         return $list;
