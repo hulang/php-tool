@@ -10,8 +10,8 @@ class File
 {
     /**
      * 创建目录
-     * @param $dir     string   目录名
-     * @return boolean true 成功/false 失败
+     * @param $dir string 目录名
+     * @return mixed true 成功/false 失败
      */
     public static function mk_dir($dir)
     {
@@ -26,8 +26,8 @@ class File
     }
     /**
      * 读取文件内容
-     * @param $filename  string  文件名
-     * @return string    文件内容
+     * @param $filename string 文件名
+     * @return mixed 文件内容
      */
     public static function read_file($filename)
     {
@@ -44,10 +44,10 @@ class File
     }
     /**
      * 写文件
-     * @param $filename  string  文件名
-     * @param $writetext string  文件内容
-     * @param $openmod 	 string  打开方式
-     * @return boolean true 成功/false 失败
+     * @param $filename string 文件名
+     * @param $writetext string 文件内容
+     * @param $openmod string 打开方式
+     * @return mixed true 成功/false 失败
      */
     public static function write_file($filename, $writetext, $openmod = 'w')
     {
@@ -62,8 +62,8 @@ class File
     }
     /**
      * 删除文件
-     * @param  $filename string  文件名
-     * @return boolean true 成功/false 失败
+     * @param  $filename string 文件名
+     * @return mixed true 成功/false 失败
      */
     public static function del_file($filename)
     {
@@ -76,8 +76,8 @@ class File
     }
     /**
      * 删除目录
-     * @param $dirName   string   原目录
-     * @return boolean true 成功/false 失败
+     * @param $dirName string 原目录
+     * @return mixed true 成功/false 失败
      */
     public static function del_dir($dirName)
     {
@@ -100,9 +100,9 @@ class File
     }
     /**
      * 复制目录
-     * @param $surDir   string   原目录
-     * @param $toDir  	string   目标目录
-     * @return boolean true 成功/false 失败
+     * @param $surDir string 原目录
+     * @param $toDir string 目标目录
+     * @return mixed true 成功/false 失败
      */
     public static function copy_dir($surDir, $toDir)
     {
@@ -131,8 +131,8 @@ class File
     }
     /**
      * 得到指定目录里的信息
-     * @param $path   string   原目录
-     * @return unknown
+     * @param $path string 原目录
+     * @return mixed
      */
     public static function getFolder($path = '')
     {
@@ -179,8 +179,8 @@ class File
     }
     /**
      * 统计文件夹大小
-     * @param $dir  string   目录名
-     * @return number 文件夹大小(单位 B)
+     * @param $dir string 目录名
+     * @return mixed 文件夹大小(单位 B)
      */
     public static function getDirSize($dir)
     {
@@ -201,8 +201,8 @@ class File
     }
     /**
      * 检测是否为空文件夹
-     * @param $dir  string   目录名
-     * @return boolean true 空/fasle 不为空
+     * @param $dir string 目录名
+     * @return mixed true 空/fasle 不为空
      */
     public static function empty_dir($dir)
     {
@@ -210,8 +210,8 @@ class File
     }
     /**
      * 文件大小格式
-     * @param $byte  int   大小
-     * @return string
+     * @param $byte int 大小
+     * @return mixed
      */
     public static function fileSizeFormat($byte)
     {
@@ -244,6 +244,7 @@ class File
     }
     /**
      * 辅助函数 round_up(),该函数用来取舍小数点位数的,四舍五入
+     * @return mixed
      */
     public static function round_dp($num, $dp)
     {
@@ -252,8 +253,8 @@ class File
     }
     /**
      * 获取文件扩展名
-     * @param $fileName  string   文件名
-     * @return string 扩展名
+     * @param $fileName string 文件名
+     * @return mixed 扩展名
      */
     public static function getFileExt($fileName)
     {
@@ -262,7 +263,7 @@ class File
     /**
      * 转换字符编码
      * @param $string
-     * @return string
+     * @return mixed
      */
     public static function convertEncoding($string)
     {
