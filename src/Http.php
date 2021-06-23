@@ -94,7 +94,7 @@ class Http
      * @param string $url    请求的链接
      * @param mixed  $params 请求的参数
      * @param string $method 请求的方法
-     * @return boolean TRUE
+     * @return mixed TRUE
      */
     public static function sendAsyncRequest($url, $params = [], $method = 'POST')
     {
@@ -146,6 +146,7 @@ class Http
      * @param string $file
      * @param bool   $delaftersend
      * @param bool   $exitaftersend
+     * @return mixed
      */
     public static function sendToBrowser($file, $delaftersend = true, $exitaftersend = true)
     {
