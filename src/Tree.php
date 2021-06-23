@@ -14,7 +14,7 @@ class Tree
      * @param $son     string 子级元素的名称 如 id
      * @param $pid     int    父级元素的id 实际上传递元素的主键
      * @param $lv      int    级别
-     * @return array
+     * @return mixed
      */
     public static function getSubTree($data, $parent = 'pid', $son = 'id', $pid = 0, $lv = 0)
     {
@@ -36,7 +36,7 @@ class Tree
      * @param $son     string 子级元素的名称 如 id
      * @param $pid     int    父级元素的id 实际上传递元素的主键
      * @param $child   string 子标签包含名称默认：child
-     * @return array
+     * @return mixed
      */
     public static function getSubTreeList($data, $parent = 'pid', $son = 'id', $pid = 0, $child = 'child')
     {
@@ -58,7 +58,7 @@ class Tree
      * @param $level   int    等级
      * @param $parent  string 父级元素的名称 如 pid
      * @param $son     string 子级元素的名称 如 id
-     * @return array
+     * @return mixed
      */
     public static function getOneMergeTree($data, $html = '├─', $pid = 0, $level = 0, $parent = 'pid', $son = 'id')
     {
@@ -79,7 +79,7 @@ class Tree
      * @param $data    array  数据
      * @param $pid     int    顶级分类的值
      * @param $name    string 二级数组的名称
-     * @return array
+     * @return mixed
      */
     public static function getMultidMergeTree($data, $pid = 0, $name = 'child')
     {
@@ -100,7 +100,7 @@ class Tree
      * @param $son           string 子级元素的名称 如 id
      * @param $sort_type     int    二级数组排序方式
      * @param $name          string 二级数组的名称
-     * @return array
+     * @return mixed
      */
     public static function getTree($data, $parent = 'pid', $son = 'id', $sort_type = 0, $name = 'child')
     {
@@ -153,7 +153,7 @@ class Tree
      * @param $id      int    子级元素id值
      * @param $parent  string 父级元素的名称 如 pid
      * @param $son     string 子级元素的名称 如 id
-     * @return array
+     * @return mixed
      */
     public static function getParents($data, $id, $parent = 'pid', $son = 'id')
     {
@@ -173,7 +173,7 @@ class Tree
      * @param $id      int    子级元素id值
      * @param $parent  string 父级元素的名称 如 pid
      * @param $son     string 子级元素的名称 如 id
-     * @return array
+     * @return mixed
      */
     public static function getParentsIds($data, $id, $parent = 'pid', $son = 'id')
     {
@@ -193,7 +193,7 @@ class Tree
      * @param $pid     int    父级元素id值
      * @param $parent  string 父级元素的名称 如 pid
      * @param $son     string 子级元素的名称 如 id
-     * @return array
+     * @return mixed
      */
     public static function getChildsId($data, $pid, $parent = 'pid', $son = 'id')
     {
@@ -213,7 +213,7 @@ class Tree
      * @param $pid     int    父级元素id值
      * @param $parent  string 父级元素的名称 如 pid
      * @param $son     string 子级元素的名称 如 id
-     * @return array
+     * @return mixed
      */
     public static function getChilds($data, $pid, $parent = 'pid', $son = 'id')
     {
