@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace hulang\tool;
 
 /*
@@ -13,7 +15,7 @@ class File
      * @param $dir string 目录名
      * @return mixed true 成功/false 失败
      */
-    public static function mk_dir($dir)
+    public static function mkDir($dir)
     {
         $dir = rtrim($dir, '/') . '/';
         if (!is_dir($dir)) {
@@ -29,7 +31,7 @@ class File
      * @param $filename string 文件名
      * @return mixed 文件内容
      */
-    public static function read_file($filename)
+    public static function readFile($filename)
     {
         $content = '';
         if (function_exists('file_get_contents')) {
@@ -49,7 +51,7 @@ class File
      * @param $openmod string 打开方式
      * @return mixed true 成功/false 失败
      */
-    public static function write_file($filename, $writetext, $openmod = 'w')
+    public static function writeFile($filename, $writetext, $openmod = 'w')
     {
         if (@($fp = fopen($filename, $openmod))) {
             flock($fp, 2);
@@ -65,7 +67,7 @@ class File
      * @param  $filename string 文件名
      * @return mixed true 成功/false 失败
      */
-    public static function del_file($filename)
+    public static function delFile($filename)
     {
         if (file_exists($filename)) {
             unlink($filename);
@@ -79,7 +81,7 @@ class File
      * @param $dirName string 原目录
      * @return mixed true 成功/false 失败
      */
-    public static function del_dir($dirName)
+    public static function delDir($dirName)
     {
         if (!file_exists($dirName)) {
             return false;
@@ -104,7 +106,7 @@ class File
      * @param $toDir string 目标目录
      * @return mixed true 成功/false 失败
      */
-    public static function copy_dir($surDir, $toDir)
+    public static function copyDir($surDir, $toDir)
     {
         $surDir = rtrim($surDir, '/') . '/';
         $toDir = rtrim($toDir, '/') . '/';
@@ -149,11 +151,11 @@ class File
             $dir_arr['name'] = self::convertEncoding($file->getFilename());
             if ($file->isDir()) {
                 $dir_arr['type'] = 'dir';
-                $dir_arr['size'] = self::fileSizeFormat(self::getDirSize($file->getPathname()));
+                $dir_arr['size'] = self::getFileSizeFormat(self::getDirSize($file->getPathname()));
                 $dir_arr['ext'] = '';
             } else {
                 $dir_arr['type'] = 'file';
-                $dir_arr['size'] = self::fileSizeFormat($file->getSize());
+                $dir_arr['size'] = self::getFileSizeFormat($file->getSize());
                 $dir_arr['ext'] = $file->getExtension();
             }
             $dir_arr['path_name'] = $file->getPathname();
@@ -204,7 +206,7 @@ class File
      * @param $dir string 目录名
      * @return mixed true 空/fasle 不为空
      */
-    public static function empty_dir($dir)
+    public static function emptyDir($dir)
     {
         return ($files = @scandir($dir)) && count($files) <= 2;
     }
@@ -213,30 +215,30 @@ class File
      * @param $byte int 大小
      * @return mixed
      */
-    public static function fileSizeFormat($byte)
+    public static function getFileSizeFormat($byte)
     {
         if ($byte < 1024) {
             $unit = 'B';
         } else if ($byte < 10240) {
-            $byte = self::round_dp($byte / 1024, 2);
+            $byte = self::roundDp($byte / 1024, 2);
             $unit = 'KB';
         } else if ($byte < 102400) {
-            $byte = self::round_dp($byte / 1024, 2);
+            $byte = self::roundDp($byte / 1024, 2);
             $unit = 'KB';
         } else if ($byte < 1048576) {
-            $byte = self::round_dp($byte / 1024, 2);
+            $byte = self::roundDp($byte / 1024, 2);
             $unit = 'KB';
         } else if ($byte < 10485760) {
-            $byte = self::round_dp($byte / 1048576, 2);
+            $byte = self::roundDp($byte / 1048576, 2);
             $unit = 'MB';
         } else if ($byte < 104857600) {
-            $byte = self::round_dp($byte / 1048576, 2);
+            $byte = self::roundDp($byte / 1048576, 2);
             $unit = 'MB';
         } else if ($byte < 1073741824) {
-            $byte = self::round_dp($byte / 1048576, 2);
+            $byte = self::roundDp($byte / 1048576, 2);
             $unit = 'MB';
         } else {
-            $byte = self::round_dp($byte / 1073741824, 2);
+            $byte = self::roundDp($byte / 1073741824, 2);
             $unit = 'GB';
         }
         $byte .= $unit;
@@ -246,7 +248,7 @@ class File
      * 辅助函数 round_up(),该函数用来取舍小数点位数的,四舍五入
      * @return mixed
      */
-    public static function round_dp($num, $dp)
+    public static function roundDp($num, $dp)
     {
         $sh = pow(10, $dp);
         return (round($num * $sh) / $sh);
