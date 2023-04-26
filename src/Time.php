@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace hulang\tool;
 
 class Time
