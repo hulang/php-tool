@@ -12,8 +12,8 @@ class File
 {
     /**
      * 创建目录
-     * @param $dir string 目录名
-     * @return mixed true 成功/false 失败
+     * @param string $dir 目录名
+     * @return mixed|bool true 成功/false 失败
      */
     public static function mkDir($dir)
     {
@@ -28,8 +28,8 @@ class File
     }
     /**
      * 读取文件内容
-     * @param $filename string 文件名
-     * @return mixed 文件内容
+     * @param string $filename 文件名
+     * @return mixed|string 文件内容
      */
     public static function readFile($filename)
     {
@@ -46,10 +46,10 @@ class File
     }
     /**
      * 写文件
-     * @param $filename string 文件名
-     * @param $writetext string 文件内容
-     * @param $openmod string 打开方式
-     * @return mixed true 成功/false 失败
+     * @param string $filename 文件名
+     * @param string $writetext 文件内容
+     * @param string $openmod 打开方式
+     * @return mixed|bool true 成功/false 失败
      */
     public static function writeFile($filename, $writetext, $openmod = 'w')
     {
@@ -64,8 +64,8 @@ class File
     }
     /**
      * 删除文件
-     * @param  $filename string 文件名
-     * @return mixed true 成功/false 失败
+     * @param string $filename 文件名
+     * @return mixed|bool true 成功/false 失败
      */
     public static function delFile($filename)
     {
@@ -78,8 +78,8 @@ class File
     }
     /**
      * 删除目录
-     * @param $dirName string 原目录
-     * @return mixed true 成功/false 失败
+     * @param string $dirName 原目录
+     * @return mixed|bool true 成功/false 失败
      */
     public static function delDir($dirName)
     {
@@ -91,7 +91,7 @@ class File
             $file = $dirName . '/' . $fileName;
             if ($fileName != '.' && $fileName != '..') {
                 if (is_dir($file)) {
-                    self::del_dir($file);
+                    self::delDir($file);
                 } else {
                     unlink($file);
                 }
@@ -102,9 +102,9 @@ class File
     }
     /**
      * 复制目录
-     * @param $surDir string 原目录
-     * @param $toDir string 目标目录
-     * @return mixed true 成功/false 失败
+     * @param string $surDir 原目录
+     * @param string $toDir 目标目录
+     * @return mixed|bool true 成功/false 失败
      */
     public static function copyDir($surDir, $toDir)
     {
@@ -114,7 +114,7 @@ class File
             return false;
         }
         if (!file_exists($toDir)) {
-            self::mk_dir($toDir);
+            self::mkDir($toDir);
         }
         $file = opendir($surDir);
         while ($fileName = readdir($file)) {
@@ -122,7 +122,7 @@ class File
             $file2 = $toDir . '/' . $fileName;
             if ($fileName != '.' && $fileName != '..') {
                 if (is_dir($file1)) {
-                    self::copy_dir($file1, $file2);
+                    self::copyDir($file1, $file2);
                 } else {
                     copy($file1, $file2);
                 }
@@ -133,8 +133,8 @@ class File
     }
     /**
      * 得到指定目录里的信息
-     * @param $path string 原目录
-     * @return mixed
+     * @param string $path 原目录
+     * @return mixed|array
      */
     public static function getFolder($path = '')
     {
@@ -181,8 +181,8 @@ class File
     }
     /**
      * 统计文件夹大小
-     * @param $dir string 目录名
-     * @return mixed 文件夹大小(单位 B)
+     * @param string $dir 目录名
+     * @return mixed|int 文件夹大小(单位 B)
      */
     public static function getDirSize($dir)
     {
@@ -203,7 +203,7 @@ class File
     }
     /**
      * 检测是否为空文件夹
-     * @param $dir string 目录名
+     * @param string $dir 目录名
      * @return mixed true 空/fasle 不为空
      */
     public static function emptyDir($dir)
@@ -213,7 +213,7 @@ class File
     /**
      * 文件大小格式
      * @param $byte int 大小
-     * @return mixed
+     * @return mixed|int
      */
     public static function getFileSizeFormat($byte)
     {
@@ -246,7 +246,7 @@ class File
     }
     /**
      * 辅助函数 round_up(),该函数用来取舍小数点位数的,四舍五入
-     * @return mixed
+     * @return mixed|int
      */
     public static function roundDp($num, $dp)
     {
@@ -255,8 +255,8 @@ class File
     }
     /**
      * 获取文件扩展名
-     * @param $fileName string 文件名
-     * @return mixed 扩展名
+     * @param string $fileName 文件名
+     * @return mixed|string 扩展名
      */
     public static function getFileExt($fileName)
     {
@@ -264,8 +264,8 @@ class File
     }
     /**
      * 转换字符编码
-     * @param $string
-     * @return mixed
+     * @param string $string 字符串
+     * @return mixed|string
      */
     public static function convertEncoding($string)
     {

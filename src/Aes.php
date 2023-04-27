@@ -7,6 +7,7 @@ namespace hulang\tool;
 /*
 ** Aes加密解密类
 */
+
 class Aes
 {
     private $hex_iv = '00000000000000000000000000000000';
