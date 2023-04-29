@@ -3,4 +3,6 @@
 
 安装
 
-`composer require hulang/php-tool`
+```
+composer require hulang/php-tool`
+```
