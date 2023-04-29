@@ -12,7 +12,7 @@ class ChinaHoliday
 {
     /**
      * 工作日中的休息日(节日)
-     * @return array
+     * @return mixed|array
      */
     private static $holiday = [
         '2020' => ['0101', '0124', '0127', '0128', '0129', '0130', '0406', '0501', '0504', '0505', '0625', '0626', '1001', '1002', '1005', '1006', '1007', '1008'],
@@ -22,7 +22,7 @@ class ChinaHoliday
     ];
     /**
      * 休息日中的工作日(调休日)
-     * @return array
+     * @return mixed|array
      */
     private static $workday = [
         '2020' => ['0119', '0201', '0426', '0509', '0628', '0927', '1010'],
@@ -34,9 +34,9 @@ class ChinaHoliday
     /**
      * 是否为国内的工作日
      * @param string|int $datetime 任意格式时间字符串或时间戳(默认为当前时间)
-     * @return bool 是返回True,否则返回False
+     * @return mixed|bool 是返回True,否则返回False
      */
-    public static function isWorkday($datetime = null): bool
+    public static function isWorkday($datetime = null)
     {
         $y = TimeHelper::format('Y', $datetime);
         $md = TimeHelper::format('md', $datetime);
@@ -50,9 +50,9 @@ class ChinaHoliday
     /**
      * 是否为国内的节假日
      * @param string|int $datetime 任意格式时间字符串或时间戳(默认为当前时间)
-     * @return bool 是返回True,否则返回False
+     * @return mixed|bool 是返回True,否则返回False
      */
-    public static function isHoliday($datetime = null): bool
+    public static function isHoliday($datetime = null)
     {
         return !self::isWorkday($datetime);
     }
