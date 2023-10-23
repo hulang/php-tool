@@ -231,7 +231,7 @@ class Time
      */
     public static function secondEndToday()
     {
-        list($y, $m, $d) = explode('-', date('Y-m-d'));
+        [$y, $m, $d] = explode('-', date('Y-m-d'));
         return mktime(23, 59, 59, intval($m), intval($d), intval($y)) - time();
     }
 
@@ -693,8 +693,10 @@ class Time
      */
     public static function getTimestamp(int $level = 0)
     {
-        if ($level === 0) return time();
-        list($msc, $sec) = explode(' ', microtime());
+        if ($level === 0) {
+            return time();
+        }
+        [$msc, $sec] = explode(' ', microtime());
         if ($level === 1) {
             return intval(sprintf('%.0f', (floatval($msc) + floatval($sec)) * 1000));
         } elseif ($level === 2) {
