@@ -46,8 +46,13 @@ class Tree
         if (!empty($data)) {
             foreach ($data as $k => $v) {
                 if ($v[$parent] == $pid) {
-                    $v[$child] = self::getSubTreeList($data, $parent, $son, $v[$son], $child);
+                    $arr = [];
+                    $arr = self::getSubTreeList($data, $parent, $son, $v[$son], $child);
+                    if (!empty($arr)) {
+                        $v[$child] = $arr;
+                    }
                     $tmp[] = $v;
+                    unset($arr);
                 }
             }
         }
@@ -93,8 +98,13 @@ class Tree
         if (!empty($data)) {
             foreach ($data as $k => $v) {
                 if ($v[$parent] == $pid) {
-                    $v[$name] = self::getMultidMergeTree($data, $parent, $son, $v[$son], $name);
+                    $tmp = [];
+                    $tmp = self::getMultidMergeTree($data, $parent, $son, $v[$son], $name);
+                    if (!empty($tmp)) {
+                        $v[$name] = $tmp;
+                    }
                     $arr[] = $v;
+                    unset($tmp);
                 }
             }
         }
