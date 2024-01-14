@@ -6,7 +6,7 @@ namespace hulang\tool\build;
 
 trait ArrCheck
 {
-    public  function pf_exists($key, $array)
+    public function pf_exists($key, $array)
     {
         if (!is_array($array)) {
             return false;
@@ -17,7 +17,7 @@ trait ArrCheck
         return self::parseAndValidateKeys($key, $array)['isExists'];
     }
 
-    public  function pf_save($key, &$array, $value, $replace = true)
+    public function pf_save($key, &$array, $value, $replace = true)
     {
         if (!is_array($array)) {
             return false;
@@ -62,7 +62,7 @@ trait ArrCheck
         return $parseInfo['completed'];
     }
 
-    public  function pf_delete($key, &$array)
+    public function pf_delete($key, &$array)
     {
         if (!is_array($array)) {
             return false;
@@ -77,7 +77,7 @@ trait ArrCheck
         return self::parseAndValidateKeys($key, $array, 'delete')['completed'];
     }
 
-    public  function pf_check_get($key, $array, $default = null, $ignoreString = true)
+    public function pf_check_get($key, $array, $default = null, $ignoreString = true)
     {
         if (!is_array($array)) {
             return $default;
@@ -98,7 +98,7 @@ trait ArrCheck
         return ($parseInfo['completed'] && ($parseInfo['isExists'] || $parseInfo['isString'])) ? $parseInfo['value'] : $default;
     }
 
-    public  function pf_shuffle_assoc($array)
+    public function pf_shuffle_assoc($array)
     {
         if (!is_array($array)) {
             return false;
