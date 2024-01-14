@@ -112,7 +112,7 @@ trait ArrCheck
         return $random;
     }
 
-    private  function parseAndValidateKeys($key, &$array, $mode = '')
+    private function parseAndValidateKeys($key, &$array, $mode = '')
     {
         $parseInfo = [
             'keys' => [],
