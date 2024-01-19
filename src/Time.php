@@ -773,4 +773,26 @@ class Time
     {
         return intval(date('t', self::toTimestamp($datetime)));
     }
+    /**
+     * 获取两个日期之间的所有日期
+     * @param string $start 格式|2024-01-19
+     * @param string $end 格式|2024-05-06
+     * @param int $type 返回类型,0:Y-m-d,非0返回:时间戳
+     * @return mixed|array
+     */
+    public static function getBetweenTwoDates($start, $end, $type = 0)
+    {
+        $list = [];
+        $dt_start = strtotime($start);
+        $dt_end = strtotime($end);
+        while ($dt_start <= $dt_end) {
+            if ($type == 0) {
+                $list[] = date('Y-m-d', $dt_start);
+            } else {
+                $list[] = strtotime(date('Y-m-d', $dt_start));
+            }
+            $dt_start = strtotime('+1 day', $dt_start);
+        }
+        return $list;
+    }
 }
