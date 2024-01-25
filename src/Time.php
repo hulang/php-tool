@@ -417,9 +417,10 @@ class Time
      * 返回两个日期相差天数(如果只传入一个日期,则与当天时间比较)
      * @param int|string $datetime 要计算的时间
      * @param int|string $new_datetime 要比较的时间(默认为当前时间)
+     * @param bool $is_day 是否包含今天(默认false),如果传入true,则包含今天开始计算
      * @return mixed|int 相差天数
      */
-    public static function diffDays($datetime, $new_datetime = null)
+    public static function diffDays($datetime, $new_datetime = null, bool $is_day = false)
     {
         $datetime = date('Y-m-d', self::toTimestamp($datetime));
         if ($new_datetime) {
@@ -427,8 +428,11 @@ class Time
         } else {
             $new_datetime = date('Y-m-d');
         }
-
-        return date_diff(date_create($datetime), date_create($new_datetime))->days;
+        $result = date_diff(date_create($datetime), date_create($new_datetime))->days;
+        if ($is_day) {
+            $result = $result + 1;
+        }
+        return $result;
     }
 
     /**
@@ -575,17 +579,22 @@ class Time
      * 返回N天后的时间戳,传入第二个参数,则从该时间开始计算
      * @param int $day 天数(默认为1天)
      * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param bool $is_day 是否包含今天(默认false),如果传入true,则包含今天开始计算
      * @param bool $round 是否取整(默认false),如果传入true,则返回当前日期0点的时间戳
      * @return mixed|int 时间戳
      */
-    public static function afterDay(int $day = 1, $datetime = null, bool $round = false)
+    public static function afterDay(int $day = 1, $datetime = null, bool $is_day = false, bool $round = false)
     {
         $date = new DateTime();
         if ($datetime !== null) {
             $date->setTimestamp(self::toTimestamp($datetime));
         }
         $timestamp = $date->modify(sprintf('+%d day', $day))->getTimestamp();
-        return $round ? strtotime(date('Y-m-d 00:00:00', $timestamp)) : $timestamp;
+        $result = $round ? strtotime(date('Y-m-d 00:00:00', $timestamp)) : $timestamp;
+        if ($is_day) {
+            $result = $result - 1;
+        }
+        return $result;
     }
 
     /**
