@@ -5,13 +5,21 @@ declare(strict_types=1);
 namespace hulang\tool;
 
 use DateTime;
+use DateTimeZone;
+use Exception;
 use InvalidArgumentException;
 
 /**
  * 最方便的PHP时间助手类, 所有方法都可以传入任意类型的时间日期格式或者时间戳
+ * https://github.com/zjkal/time-helper
+ * 2023-10-29
  */
 class Time
 {
+    // 常见日期格式
+    public static $date_formats = ['Y-m-d', 'm/d/Y', 'd.m.Y', 'd/m/Y', 'Y年m月d日', 'Y年m月', 'Y年m月d号', 'Y/m/d', 'Y.m.d', 'Y.m'];
+    // 常见时间格式
+    public static $time_formats = ['H', 'H:i', 'H:i:s', 'H点', 'H点i分', 'H点i分s秒', 'H时', 'H时i分', 'H时i分s秒'];
     /**
      * 返回今日开始和结束的时间戳
      *
@@ -220,6 +228,11 @@ class Time
             if ($timestamp) {
                 return $timestamp;
             } else {
+                //强制转化时间格式
+                $datetime = self::formatSpecialDateTime($datetime);
+                if ($datetime !== false) {
+                    return strtotime($datetime);
+                }
                 throw new InvalidArgumentException('Param datetime must be a timestamp or a string time');
             }
         }
@@ -231,7 +244,7 @@ class Time
      */
     public static function secondEndToday()
     {
-        [$y, $m, $d] = explode('-', date('Y-m-d'));
+        list($y, $m, $d) = explode('-', date('Y-m-d'));
         return mktime(23, 59, 59, intval($m), intval($d), intval($y)) - time();
     }
 
@@ -277,13 +290,13 @@ class Time
 
     /**
      * 讲时间转换为友好显示格式
-     * @param int|string $time 时间日期的字符串或数字
+     * @param int|string $datetime 时间日期的字符串或数字
      * @param string $lang 语言,默认为中文,如果要显示英文传入en即可
      * @return mixed|string 转换后的友好时间格式
      */
-    public static function toFriendly($time, string $lang = 'zh')
+    public static function toFriendly($datetime, string $lang = 'zh')
     {
-        $time = self::toTimestamp($time);
+        $time = self::toTimestamp($datetime);
 
         $birthday = new DateTime();
         $birthday->setTimestamp($time);
@@ -589,10 +602,12 @@ class Time
         if ($datetime !== null) {
             $date->setTimestamp(self::toTimestamp($datetime));
         }
-        $timestamp = $date->modify(sprintf('+%d day', $day))->getTimestamp();
-        $result = $round ? strtotime(date('Y-m-d 00:00:00', $timestamp)) : $timestamp;
         if ($is_day) {
-            $result = $result - 1;
+            $day = $day - 1;
+        }
+        $result = $date->modify(sprintf('+%d day', $day))->getTimestamp();
+        if ($round) {
+            $result = strtotime(date('Y-m-d 00:00:00', $result));
         }
         return $result;
     }
@@ -781,6 +796,87 @@ class Time
     public static function daysInMonth($datetime = null)
     {
         return intval(date('t', self::toTimestamp($datetime)));
+    }
+    /**
+     * 不同时区的时间转换
+     * @param string $toTimezone 目标时区
+     * @param string|null $fromTimezone 原时区(默认为当前PHP运行环境所设置的时区)
+     * @param int|string  $datetime 任意格式的时间字符串或时间戳(默认为当前时间)
+     * @param string $format 格式化字符串
+     * @return string
+     * @throws mixed|string|Exception
+     */
+    public static function timezoneFormat(string $toTimezone, string $fromTimezone = null, $datetime = 'now', string $format = 'Y-m-d H:i:s')
+    {
+        if (self::isTimestamp($datetime)) {
+            $date = new DateTime();
+            $date->setTimestamp($datetime);
+            $date->setTimezone(new DateTimeZone('UTC'));
+        } else {
+            if ($fromTimezone === null) {
+                $fromTimezone = date_default_timezone_get();
+            }
+            $date = new DateTime($datetime, new DateTimeZone($fromTimezone));
+        }
+        $date->setTimezone(new DateTimeZone($toTimezone));
+        return $date->format($format);
+    }
+
+    /**
+     * 比较两个时间的大小,如果第二个参数为空,则与当前时间比较
+     * @param $datetime1
+     * @param $datetime2
+     * @return mixed|int 第一个时间大于第二个时间则返回1,小于则返回-1,相等时则返回0
+     */
+    public static function compare($datetime1, $datetime2 = null)
+    {
+        $timestamp1 = self::toTimestamp($datetime1);
+        $timestamp2 = self::toTimestamp($datetime2);
+        if ($timestamp1 > $timestamp2) {
+            return 1;
+        } elseif ($timestamp1 < $timestamp2) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+    /**
+     * 格式化特殊日期时间
+     * @param string $datetime
+     * @param string|null $format 参数为空则根据日期时间自动格式化为 Y-m-d 或 Y-m-d H:i:s
+     * @return mixed|bool|string
+     */
+    public static function formatSpecialDateTime(string $datetime, string $format = null)
+    {
+        [$date, $time] = explode(' ', $datetime);
+        if (!$date) {
+            return false;
+        }
+        //获取时间的格式
+        $time_format_str = '';
+        if ($time) {
+            foreach (self::$time_formats as $time_format) {
+                if (date_create_from_format($time_format, $time) !== false) {
+                    $time_format_str = $time_format;
+                    break;
+                }
+            }
+        }
+        foreach (self::$date_formats as $date_format) {
+            //获取日期的格式
+            if (date_create_from_format($date_format, $date) !== false) {
+                $datetime_format = ($time_format_str) ? "$date_format $time_format_str" : $date_format;
+                //获取日期时间对象
+                $datetime_obj = date_create_from_format($datetime_format, $datetime);
+                if ($datetime_obj !== false) {
+                    if ($format) {
+                        return $datetime_obj->format($format);
+                    }
+                    return $datetime_obj->format('Y-m-d' . ($time_format_str ? ' H:i:s' : ''));
+                }
+            }
+        }
+        return false;
     }
     /**
      * 获取两个日期之间的所有日期
