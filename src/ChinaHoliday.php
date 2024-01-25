@@ -33,7 +33,7 @@ class ChinaHoliday
      * @param string|int $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return mixed|bool 是返回True,否则返回False
      */
-    public static function isWorkday($datetime = null): bool
+    public static function isWorkday($datetime = null)
     {
         $y = Time::format('Y', $datetime);
         $md = Time::format('md', $datetime);
@@ -49,7 +49,7 @@ class ChinaHoliday
      * @param string|int $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return mixed|bool 是返回True,否则返回False
      */
-    public static function isHoliday($datetime = null): bool
+    public static function isHoliday($datetime = null)
     {
         return !self::isWorkday($datetime);
     }
