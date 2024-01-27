@@ -217,7 +217,6 @@ class Time
         if (empty($datetime)) {
             return time();
         }
-
         $start = strtotime('1970-01-01 00:00:00');
         $end = strtotime('2099-12-31 23:59:59');
         //判断是否为时间戳
@@ -244,7 +243,7 @@ class Time
      */
     public static function secondEndToday()
     {
-        list($y, $m, $d) = explode('-', date('Y-m-d'));
+        [$y, $m, $d] = explode('-', date('Y-m-d'));
         return mktime(23, 59, 59, intval($m), intval($d), intval($y)) - time();
     }
 
