@@ -882,19 +882,20 @@ class Time
      * 获取两个日期之间的所有日期
      * @param string $start 任意格式时间字符串或时间戳
      * @param string $end 任意格式时间字符串或时间戳
+     * @param string $format 参数为空则根据日期时间自动格式化为 Y-m-d 或 Y-m-d H:i:s
      * @param int $type 返回类型,0:Y-m-d,非0返回:时间戳
      * @return mixed|array
      */
-    public static function getBetweenTwoDates($start, $end, $type = 0)
+    public static function getBetweenTwoDates($start, $end, $format = 'Y-m-d', $type = 0)
     {
         $list = [];
         $dt_start = self::toTimestamp($start);
         $dt_end = self::toTimestamp($end);
         while ($dt_start <= $dt_end) {
             if ($type == 0) {
-                $list[] = date('Y-m-d', $dt_start);
+                $list[] = date($format, $dt_start);
             } else {
-                $list[] = strtotime(date('Y-m-d', $dt_start));
+                $list[] = strtotime(date($format, $dt_start));
             }
             $dt_start = strtotime('+1 day', $dt_start);
         }
