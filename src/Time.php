@@ -878,9 +878,22 @@ class Time
         return false;
     }
     /**
+     * 根据|时间字符串或时间戳|返回传递的开始时间和结束时间
+     * @param string $datetime 任意格式时间字符串或时间戳
+     * @return mixed|array
+     */
+    public static function getByTimestamp($datetime)
+    {
+        $timestamp = self::toTimestamp($datetime);
+        $start = strtotime(date('Y-m-d 00:00:00', $timestamp));
+        $end = strtotime(date('Y-m-d 23:59:59', $timestamp));
+        //
+        return [$start, $end];
+    }
+    /**
      * 获取两个日期之间的所有日期
-     * @param string $start 任意格式时间字符串或时间戳
-     * @param string $end 任意格式时间字符串或时间戳
+     * @param string $start 开始时间|任意格式时间字符串或时间戳
+     * @param string $end 结束时间|任意格式时间字符串或时间戳
      * @param string $format 参数为空则根据日期时间自动格式化为 Y-m-d 或 Y-m-d H:i:s
      * @param int $type 返回类型,0:Y-m-d,非0返回:时间戳
      * @return mixed|array
