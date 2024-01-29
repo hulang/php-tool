@@ -170,6 +170,21 @@ class Time
         return $nowTime + self::daysToSecond($day);
     }
     /**
+     * 返回几天后的开始和结束的时间戳
+     *
+     * @param int $day 天数
+     * @return mixed|array
+     */
+    public static function daysAfterTimeStamp($day = 1)
+    {
+        $nowTime = time();
+        $result = $nowTime + self::daysToSecond($day);
+        $start = strtotime(date('Y-m-d 00:00:00', $result));
+        $end = strtotime(date('Y-m-d 23:59:59', $result));
+        //
+        return [$start, $end];
+    }
+    /**
      * 天数转换成秒数
      *
      * @param int $day 天数
