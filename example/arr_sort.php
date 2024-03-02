@@ -9,4 +9,4 @@ $arr = [1, 2, 3, 4, [6, 4, 5, 7]];
 
 //Arr::dd(sort($arr),0);
 
-Arr::dd(Arr::pf_arr_sort($arr));
+Arr::dd(Arr::arrSort($arr));

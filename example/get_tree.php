@@ -13,4 +13,4 @@ $arr = [
     ['name' => 'TOP1', 'cid' => 2, 'id' => 5],
 ];
 
-Arr::dd(Arr::pf_get_tree($arr, 0, 'cid'));
+Arr::dd(Arr::getDataTree($arr, 0, 'cid'));

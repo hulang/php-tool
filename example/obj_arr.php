@@ -16,4 +16,4 @@ $obj->approved       = true;
 $obj->favorite_count = 1;
 $obj->status         = NULL;
 //echo json_encode($obj);
-Arr::dd(Arr::pf_obj_arr($obj));
+Arr::dd(Arr::objArr($obj));

@@ -10,5 +10,5 @@ $arr = [
     'sex' => '女'
 ];
 
-Arr::dd(Arr::pf_get($arr, '0.name.dd', 0));
-Arr::dd(Arr::pf_get($arr, 'sex', 0));
+Arr::dd(Arr::getData($arr, '0.name.dd', 0));
+Arr::dd(Arr::getData($arr, 'sex', 0));

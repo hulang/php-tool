@@ -18,4 +18,4 @@ $arr = [
     ]
 ];
 
-Arr::dd(Arr::pf_key_exists($arr, 'pf'), 0);
+Arr::dd(Arr::keyExists($arr, 'pf'), 0);

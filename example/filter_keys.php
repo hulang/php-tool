@@ -18,4 +18,4 @@ $arr = [
     ]
 ];
 
-Arr::dd(Arr::pf_filter_keys($arr, ['ADDRESS', 'pfinal']));
+Arr::dd(Arr::filterKeys($arr, ['ADDRESS', 'pfinal']));

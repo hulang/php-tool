@@ -15,4 +15,4 @@ $arr = [
     ['id' => 16, 'value' => 1],
 ];
 
-Arr::dd(Arr::pf_array_rand_by_weight($arr));
+Arr::dd(Arr::arrayRandByWeight($arr));

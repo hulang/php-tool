@@ -18,4 +18,4 @@ $arr = [
     ]
 ];
 
-Arr::dd(Arr::pf_deep_in_array($arr, 'pf社区'), 0);
+Arr::dd(Arr::deepInArray($arr, 'pf社区'), 0);

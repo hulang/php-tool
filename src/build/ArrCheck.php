@@ -6,7 +6,7 @@ namespace hulang\tool\build;
 
 trait ArrCheck
 {
-    public function pf_exists($key, $array)
+    public function exists($key, $array)
     {
         if (!is_array($array)) {
             return false;
@@ -14,10 +14,10 @@ trait ArrCheck
         if ($key == '') {
             return is_array($array) && array_key_exists((string)$key, $array);
         }
-        return self::parseAndValidateKeys($key, $array)['isExists'];
+        return $this->parseAndValidateKeys($key, $array)['isExists'];
     }
 
-    public function pf_save($key, &$array, $value, $replace = true)
+    public function save($key, &$array, $value, $replace = true)
     {
         if (!is_array($array)) {
             return false;
@@ -30,7 +30,7 @@ trait ArrCheck
             $array[] = $value;
             return true;
         }
-        $parseInfo = self::parseAndValidateKeys($key, $array, 'save');
+        $parseInfo = $this->parseAndValidateKeys($key, $array, 'save');
         if ($parseInfo['completed']) {
             $currEl = &$array;
             foreach ($parseInfo['keys'] as $key) {
@@ -62,7 +62,7 @@ trait ArrCheck
         return $parseInfo['completed'];
     }
 
-    public function pf_delete($key, &$array)
+    public function delete($key, &$array)
     {
         if (!is_array($array)) {
             return false;
@@ -74,10 +74,10 @@ trait ArrCheck
         if ($key === '[]') {
             return false;
         }
-        return self::parseAndValidateKeys($key, $array, 'delete')['completed'];
+        return $this->parseAndValidateKeys($key, $array, 'delete')['completed'];
     }
 
-    public function pf_check_get($key, $array, $default = null, $ignoreString = true)
+    public function getCheck($key, $array, $default = null, $ignoreString = true)
     {
         if (!is_array($array)) {
             return $default;
@@ -91,14 +91,14 @@ trait ArrCheck
         if ($key === '[]') {
             return $default;
         }
-        $parseInfo = self::parseAndValidateKeys($key, $array, 'get');
+        $parseInfo = $this->parseAndValidateKeys($key, $array, 'get');
         if ($ignoreString) {
             return (!$parseInfo['isString'] && $parseInfo['completed']) ? $parseInfo['value'] : $default;
         }
         return ($parseInfo['completed'] && ($parseInfo['isExists'] || $parseInfo['isString'])) ? $parseInfo['value'] : $default;
     }
 
-    public function pf_shuffle_assoc($array)
+    public function shuffleAssoc($array)
     {
         if (!is_array($array)) {
             return false;

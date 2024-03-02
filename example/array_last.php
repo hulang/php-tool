@@ -7,7 +7,7 @@ use hulang\tool\Arr;
 
 $array = [100, 200, 300];
 
-$value = Arr::pf_array_last($array, function ($value, $key) {
+$value = Arr::arrayLast($array, function ($value, $key) {
     return $value >= 300;
 });
 Arr::dd($value);

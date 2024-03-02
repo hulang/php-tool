@@ -7,7 +7,7 @@ use hulang\tool\Arr;
 
 $array = [100, '200', 300, '400', 500];
 
-$array = Arr::pf_array_where($array, function ($value, $key) {
+$array = Arr::arrayWhere($array, function ($value, $key) {
     return is_string($value);
 });
 Arr::dd($array);

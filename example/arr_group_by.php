@@ -33,7 +33,7 @@ $records = [
     ],
 ];
 echo '<pre>';
-print_r(Arr::pf_array_group_by($records, 'city'));
+print_r(Arr::arrayGroupBy($records, 'city'));
 
 /*
  *  //返回结果
@@ -85,7 +85,7 @@ Array
 )
  */
 
-print_r(Arr::pf_array_group_by($records, 'city', 'state'));
+print_r(Arr::arrayGroupBy($records, 'city', 'state'));
 
 /* 返回
 Array

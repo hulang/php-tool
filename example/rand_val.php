@@ -13,4 +13,4 @@ $arr = [
     ['name' => 'TOP1', 'cid' => 2, 'id' => 5],
 ];
 
-Arr::dd(Arr::pf_rand_val($arr, 2));
+Arr::dd(Arr::randVal($arr, 2));

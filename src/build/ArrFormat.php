@@ -7,29 +7,29 @@ namespace hulang\tool\build;
 trait ArrFormat
 {
     public $rootNodeName = 'root';
-    public $type_func = array(
-        'json' => 'format_json',
-        'xml' => 'format_xml',
-        'serialize' => 'format_serialize',
-        'obj'      => 'format_obj',
-        'csv'      => 'format_csv'
-    );
+    public $type_func = [
+        'json' => 'formatJson',
+        'xml' => 'formatXml',
+        'serialize' => 'formatSerialize',
+        'obj'      => 'formatObj',
+        'csv'      => 'formatCsv'
+    ];
 
-    public function pf_encode($array, $type = 'json')
+    public function encode($array, $type = 'json')
     {
         if (method_exists($this, $this->type_func[$type])) {
-            return call_user_func(array($this, $this->type_func[$type]), $array);
+            return call_user_func([$this, $this->type_func[$type]], $array);
         } else {
             throw new \Exception(sprintf('The required method "' . $this->type_func[$type] . '" does not exist for!', $this->type_func[$type], get_class($this)));
         }
     }
 
-    private function format_json($array)
+    private function formatJson($array)
     {
         return json_encode($array);
     }
 
-    private function format_xml($array)
+    private function formatXml($array)
     {
         if (ini_get('zend.ze1_compatibility_mode') == 1) {
             ini_set('zend.ze1_compatibility_mode', 0);
@@ -37,7 +37,7 @@ trait ArrFormat
         return $this->toXml($array, $this->rootNodeName);
     }
 
-    private function format_serialize($array)
+    private function formatSerialize($array)
     {
         $array = serialize($array);
         return $array;
@@ -64,7 +64,7 @@ trait ArrFormat
         return $xml->asXML();
     }
 
-    public function format_csv($data)
+    public function formatCsv($data)
     {
         if (is_array($data) and isset($data[0])) {
             $headings = array_keys($data[0]);
@@ -72,15 +72,14 @@ trait ArrFormat
             $headings = array_keys((array) $data);
             $data = array($data);
         }
-        $output = implode(',', $headings) . "\r\n";
+        $output = implode(',', $headings) . PHP_EOL;
         foreach ($data as &$row) {
-            $output .= '"' . implode('","', (array) $row) . "\"\r\n";
+            $output .= '"' . implode('","', (array) $row) . PHP_EOL;
         }
         return $output;
     }
 
-
-    private function format_obj($array)
+    private function formatObj($array)
     {
         $array = json_encode($array);
         $arr = json_decode($array, false);

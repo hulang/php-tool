@@ -8,4 +8,4 @@ use hulang\tool\Arr;
 $arr = [1, 'a', 'c', 'e', 'f'];
 $arr1 = [2, 6, 'c', 'f'];
 
-Arr::dd(Arr::pf_array_diff_both($arr, $arr1));
+Arr::dd(Arr::arrayFiffBoth($arr, $arr1));

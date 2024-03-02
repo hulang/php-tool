@@ -7,4 +7,4 @@ use hulang\tool\Arr;
 
 $arr = [1, 54, 'a', 45, 12, 'c', 1, 1, 12, [1, 1, 'a', ['a', 'b', 'a']]];
 
-Arr::dd(Arr::pf_array_insert($arr, 23, 0));
+Arr::dd(Arr::arrayInsert($arr, 23, 0));

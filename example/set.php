@@ -9,4 +9,4 @@ $arr = [
     ['name' => ['ddf', 'emd', 'dd' => ['test']]],
     'sex' => '女'
 ];
-Arr::dd(Arr::pf_set($arr, '0.name.dd', '大爷'));
+Arr::dd(Arr::setData($arr, '0.name.dd', '大爷'));

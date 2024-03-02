@@ -10,5 +10,5 @@ $array2 = array(3, 1, 5, 6, 7, 8);
 
 echo '<pre>';
 
-Arr::dd(Arr::pf_del_val($array1, [1, 2, 3]));
-Arr::dd(Arr::pf_del_val($array2, [6, 10]));
+Arr::dd(Arr::delVal($array1, [1, 2, 3]));
+Arr::dd(Arr::delVal($array2, [6, 10]));

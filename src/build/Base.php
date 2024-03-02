@@ -15,9 +15,9 @@ class Base
      * 移除数组中的某个值 获取新数组
      * @param array $data
      * @param array $values
-     * @return array
+     * @return mixed|array
      */
-    public function pf_del_val(array $data, array $values)
+    public function delVal(array $data, array $values)
     {
         $news = [];
         foreach ($data as $key => $v) {
@@ -33,9 +33,9 @@ class Base
      * @param array $data
      * @param $key
      * @param null $value
-     * @return array|mixed|null
+     * @return mixed|array|null
      */
-    public function pf_get(array $data, $key, $value = null)
+    public function getData(array $data, $key, $value = null)
     {
         $exp = explode('.', $key);
         foreach ((array)$exp as $d) {
@@ -53,9 +53,9 @@ class Base
      * @param array $data
      * @param $key
      * @param $value
-     * @return array
+     * @return mixed|array
      */
-    public function pf_set(array $data, $key, $value)
+    public function setData(array $data, $key, $value)
     {
         $tmp = &$data;
         foreach (explode('.', $key) as $d) {
@@ -72,9 +72,9 @@ class Base
      * 不区分大小写 检测数据数据键名
      * @param $arr
      * @param $key
-     * @return bool
+     * @return mixed|bool
      */
-    public function pf_key_exists($arr, $key)
+    public function keyExists($arr, $key)
     {
         if (!is_array($arr)) return false;
         if (array_key_exists(strtolower($key), $arr)) {
@@ -82,7 +82,7 @@ class Base
         } else {
             foreach ($arr as $value) {
                 if (is_array($value)) {
-                    return $this->pf_key_exists($value, $key);
+                    return $this->keyExists($value, $key);
                 }
             }
         }
@@ -93,9 +93,9 @@ class Base
      * @param array $data
      * @param array $keys
      * @param int $type
-     * @return array
+     * @return mixed|array
      */
-    public function pf_filter_keys(array $data, array $keys, $type = 1)
+    public function filterKeys(array $data, array $keys, $type = 1)
     {
         $tmp = $data;
         foreach ($data as $k => $v) {
@@ -119,13 +119,13 @@ class Base
      * @param $arr
      * @return mixed
      */
-    public function pf_arr_sort($arr)
+    public function arrSort($arr)
     {
         $len = count($arr);
         for ($i = 1; $i < $len; $i++) {
             for ($k = 0; $k < $len - $i; $k++) {
                 if (is_array($arr[$k + 1])) {
-                    $arr[$k + 1] = $this->pf_arr_sort($arr[$k + 1]);
+                    $arr[$k + 1] = $this->arrSort($arr[$k + 1]);
                 } else {
                     if ($arr[$k] > $arr[$k + 1]) {
                         $tmp = $arr[$k + 1];
@@ -144,9 +144,9 @@ class Base
      * @param int $parent_id
      * @param string $field
      * @param string $field_key
-     * @return array
+     * @return mixed|array
      */
-    public function pf_tree($list, $parent_id = 0, $field = 'parent_id', $field_key = 'id')
+    public function tree($list, $parent_id = 0, $field = 'parent_id', $field_key = 'id')
     {
         $arr = [];
         $tree = [];
@@ -171,9 +171,9 @@ class Base
      * @param int $parent_id
      * @param string $field
      * @param string $field_key
-     * @return array
+     * @return mixed|array
      */
-    public function pf_get_tree($list, $parent_id = 0, $field = 'parent_id', $field_key = 'id')
+    public function getDataTree($list, $parent_id = 0, $field = 'parent_id', $field_key = 'id')
     {
         $tree = [];
         if (!empty($list)) {
@@ -201,11 +201,11 @@ class Base
     /**
      * 数组去重
      * @param $arr
-     * @return array
+     * @return mixed|array
      */
-    public function pf_array_unique($arr)
+    public function arrayUnique($arr)
     {
-        $dime = $this->pf_array_depth($arr);
+        $dime = $this->arrayDepth($arr);
         if ($dime <= 1) {
             $data = array_unique($arr);
         } else {
@@ -213,7 +213,7 @@ class Base
             $new_data = [];
             foreach ($arr as $key => $v) {
                 if (is_array($v)) {
-                    $new_data = $this->pf_array_unique($v);
+                    $new_data = $this->arrayUnique($v);
                 } else {
                     $temp[$key] = $v;
                 }
@@ -227,15 +227,15 @@ class Base
     /**
      * 检测数组的维度
      * @param $array
-     * @return int
+     * @return mixed|int
      */
-    public function pf_array_depth($array)
+    public function arrayDepth($array)
     {
         if (!is_array($array)) return 0;
         $max_depth = 1;
         foreach ($array as $value) {
             if (is_array($value)) {
-                $depth = $this->pf_array_depth($value) + 1;
+                $depth = $this->arrayDepth($value) + 1;
 
                 if ($depth > $max_depth) {
                     $max_depth = $depth;
@@ -250,9 +250,9 @@ class Base
      * @param $array
      * @param $columnKey
      * @param null $indexKey
-     * @return array
+     * @return mixed|array
      */
-    public function pf_array_col($array, $columnKey, $indexKey = null)
+    public function arrayCol($array, $columnKey, $indexKey = null)
     {
         $result = array();
         if (!empty($array)) {
@@ -280,9 +280,9 @@ class Base
     /**
      * 对象转换成数组
      * @param $obj
-     * @return array
+     * @return mixed|array
      */
-    public function pf_obj_arr($obj)
+    public function objArr($obj)
     {
         $arr = is_object($obj) ? get_object_vars($obj) : $obj;
         if (is_array($arr)) {
@@ -300,9 +300,9 @@ class Base
      *
      * @param array $values 多维数组
      * @param bool $drop_empty 去掉为空的值
-     * @return array
+     * @return mixed|array
      */
-    public function pf_array_flatten(array $values, $drop_empty = false)
+    public function arrayFlatten(array $values, $drop_empty = false)
     {
         $result = [];
         array_walk_recursive($values, function ($value)
@@ -318,9 +318,9 @@ class Base
     /**
      * 根据权重获取随机区间返回ID
      * @param array $array 格式为  array(array('id'=>'','value'=>''),array('id'=>'','value'=>''))   //id为标识,value为权重
-     * @return int|string
+     * @return mixed|int|string
      */
-    public function pf_array_rand_by_weight($array)
+    public function arrayRandByWeight($array)
     {
         if (!empty($array)) {
             //区间最大值
@@ -349,9 +349,9 @@ class Base
      * 二维数组验证一个值是否存在
      * @param $value
      * @param $array
-     * @return bool
+     * @return mixed|bool
      */
-    public function pf_deep_in_array($array, $value)
+    public function deepInArray($array, $value)
     {
         foreach ($array as $item) {
             if (!is_array($item)) {
@@ -364,7 +364,7 @@ class Base
 
             if (in_array($value, $item)) {
                 return true;
-            } else if ($this->pf_deep_in_array($item, $value)) {
+            } else if ($this->deepInArray($item, $value)) {
                 return true;
             }
         }
@@ -376,9 +376,9 @@ class Base
      * 随机返回 数组 的值
      * @param $array
      * @param int $len
-     * @return array|bool|mixed
+     * @return mixed|array|bool
      */
-    public function pf_rand_val($array, $len = 1)
+    public function randVal($array, $len = 1)
     {
         if (!is_array($array)) {
             return false;
@@ -395,9 +395,9 @@ class Base
      * 按权重 随机返回数组的值
      * Example:$arr = [['dd',1],['ff',2],['cc',3],['ee',4]]; 出现 ee的次数相对于其他的次数要多一点
      * @param array $array
-     * @return array|bool|mixed
+     * @return mixed|array|bool
      */
-    public function pf_rand_weighted(array $array)
+    public function randWeighted(array $array)
     {
         if (!is_array($array)) {
             return false;
@@ -411,23 +411,23 @@ class Base
                 $options[] = $weight[0];
             }
         }
-        return $this->pf_rand_val($options);
+        return $this->randVal($options);
     }
 
     /**
      * 随机打乱数组
      * @param $array
      * @param bool $statue true or  false
-     * @return bool
+     * @return mixed|bool
      */
-    public function pf_array_shuffle($array, $statue = false)
+    public function arrayShuffle($array, $statue = false)
     {
         $keys = array_keys($array);
         shuffle($keys);
         $new = [];
         foreach ($keys as $key) {
             if (is_array($array[$key] && $statue)) {
-                $new[$key] = $this->pf_array_shuffle($array[$key], 1);
+                $new[$key] = $this->arrayShuffle($array[$key], 1);
             }
             $new[$key] = $array[$key];
         }
@@ -439,9 +439,9 @@ class Base
      * @param $array
      * @param $insert
      * @param int $position
-     * @return array
+     * @return mixed|array
      */
-    public function pf_array_insert($array, $insert, $position = 0)
+    public function arrayInsert($array, $insert, $position = 0)
     {
         if (!is_array($insert)) {
             $insert = [$insert];
@@ -465,9 +465,9 @@ class Base
      * 返回两个数组中不同的元素
      * @param $array
      * @param $array1
-     * @return array
+     * @return mixed|array
      */
-    public function pf_array_diff_both($array, $array1)
+    public function arrayFiffBoth($array, $array1)
     {
         return array_merge(array_diff($array, $array1), array_diff($array1, $array));
     }
@@ -476,9 +476,9 @@ class Base
      * 按指定的键对数组依次分组
      * @param array $arr
      * @param $key
-     * @return array|bool
+     * @return mixed|array|bool
      */
-    public function pf_array_group_by(array $arr, $key)
+    public function arrayGroupBy(array $arr, $key)
     {
         if (!is_string($key) && !is_int($key)) {
             return false;
@@ -503,7 +503,7 @@ class Base
             $args = func_get_args();
             foreach ($grouped as $groupKey => $value) {
                 $params = array_merge([$value], array_slice($args, 2, func_num_args()));
-                $grouped[$groupKey] = call_user_func_array([$this, 'pf_array_group_by'], $params);
+                $grouped[$groupKey] = call_user_func_array([$this, 'arrayGroupBy'], $params);
             }
         }
         return $grouped;
@@ -512,9 +512,9 @@ class Base
     /**
      * 把数组中的null 转换成 空字符串
      * @param $arr
-     * @return array|string
+     * @return mixed|array|string
      */
-    public function pf_array_null($arr)
+    public function arrayNull($arr)
     {
 
         if ($arr !== null) {
@@ -525,7 +525,7 @@ class Base
                             $arr[$key] = '';
                         } else {
                             // 递归再去执行
-                            $arr[$key] = $this->pf_array_null($value);
+                            $arr[$key] = $this->arrayNull($value);
                         }
                     }
                 } else {
@@ -544,9 +544,9 @@ class Base
 
     /**
      * 统计数组元素出现的次数
-     * @return array|bool
+     * @return mixed|array|bool
      */
-    public function pf_count_element()
+    public function countElement()
     {
         $data = func_get_args();
         $num = func_num_args();
@@ -572,9 +572,9 @@ class Base
      * @param $from
      * @param $to
      * @param null $group
-     * @return array
+     * @return mixed|array
      */
-    public function pf_map($array, $from, $to, $group = null)
+    public function map($array, $from, $to, $group = null)
     {
         if (!is_array($array)) {
             return array();
@@ -603,9 +603,9 @@ class Base
      * 按指定值去给数组排序
      * @param array $arr
      * @param $key
-     * @return array
+     * @return mixed|array
      */
-    public function pf_arr_group_by(array $arr, $key)
+    public function arrGroupBy(array $arr, $key)
     {
         if (!is_string($key) && !is_int($key) && !is_float($key) && !is_callable($key)) {
             trigger_error('array_group_by():键应该是一个字符串、一个整数、一个浮点数或一个函数', E_USER_ERROR);
@@ -629,7 +629,7 @@ class Base
             $args = func_get_args();
             foreach ($grouped as $groupKey => $value) {
                 $params = array_merge([$value], array_slice($args, 2, func_num_args()));
-                $grouped[$groupKey] = call_user_func_array(array($this, 'self::pf_arr_group_by'), $params);
+                $grouped[$groupKey] = call_user_func_array(array($this, 'self::arrayGroupBy'), $params);
             }
         }
         return $grouped;
@@ -640,9 +640,9 @@ class Base
      * @param $arr
      * @param $key
      * @param string $orderby
-     * @return array|bool
+     * @return mixed|array|bool
      */
-    public function pf_arr_sort_by_key($arr, $key, $orderby = 'asc')
+    public function arraySortByKey($arr, $key, $orderby = 'asc')
     {
         if (count($arr) < 0) return false;
         $keys_value = [];
@@ -667,14 +667,13 @@ class Base
      * @param $arr
      * @param bool $trim
      * @param bool $unsetEmptyArr
-     * @return array
+     * @return mixed|array
      */
-
-    public function pf_arr_remove_empty(&$arr, $trim = true, $unsetEmptyArr = false)
+    public function arrayRemoveEmpty(&$arr, $trim = true, $unsetEmptyArr = false)
     {
         foreach ($arr as $key => $value) {
             if (is_array($value)) {
-                $this->pf_arr_remove_empty($arr[$key]);
+                $this->arrayRemoveEmpty($arr[$key]);
             } else {
                 $value = trim($value);
                 if ($value == '') {
@@ -694,9 +693,9 @@ class Base
      * 使用给定闭包对数组进行过滤
      * @param $array
      * @param callable $callback
-     * @return array
+     * @return mixed|array
      */
-    public function pf_array_where($array, callable $callback)
+    public function arrayWhere($array, callable $callback)
     {
         return array_filter($array, $callback, ARRAY_FILTER_USE_BOTH);
     }
@@ -708,7 +707,7 @@ class Base
      * @param null $default
      * @return mixed
      */
-    public function pf_array_first($array, callable $callback = null, $default = null)
+    public function arrayFirst($array, callable $callback = null, $default = null)
     {
         if (is_null($callback)) {
             if (empty($array)) {
@@ -734,13 +733,13 @@ class Base
      * @param null $default
      * @return mixed
      */
-    public function pf_array_last($array, callable $callback = null, $default = null)
+    public function arrayLast($array, callable $callback = null, $default = null)
     {
         if (is_null($callback)) {
             return empty($array) ? value($default) : end($array);
         }
 
-        return self::pf_array_first(array_reverse($array, true), $callback, $default);
+        return self::arrayFirst(array_reverse($array, true), $callback, $default);
     }
 
     /**

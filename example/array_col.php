@@ -18,4 +18,4 @@ $records = [
     ]
 ];
 
-Arr::dd(Arr::pf_array_col($records, 'city'));
+Arr::dd(Arr::arrayCol($records, 'city'));

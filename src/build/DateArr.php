@@ -12,9 +12,9 @@ trait DateArr
      * @param $to
      * @param string $step
      * @param string $outputFormat
-     * @return array
+     * @return mixed|array
      */
-    public static function pf_date_indexed($from, $to, $step = '+1 day', $outputFormat = 'Y-m-d')
+    public static function CreateDateArray($from, $to, $step = '+1 day', $outputFormat = 'Y-m-d')
     {
         $dates = array();
         $current = strtotime($from);
@@ -33,11 +33,11 @@ trait DateArr
      * @param null $default
      * @param string $step
      * @param string $outputFormat
-     * @return array
+     * @return mixed|array
      */
-    public static function pf_date_assoc($from, $to, $default = null, $step = '+1 day', $outputFormat = 'Y-m-d')
+    public static function CreateCorrelationArray($from, $to, $default = null, $step = '+1 day', $outputFormat = 'Y-m-d')
     {
-        $dates = self::pf_date_indexed($from, $to, $step, $outputFormat);
+        $dates = self::CreateDateArray($from, $to, $step, $outputFormat);
         return array_fill_keys($dates, $default);
     }
 }
