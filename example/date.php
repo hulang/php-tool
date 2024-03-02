@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-require __DIR__ . '/../vendor/autoload.php';
 
 $datas = \pf\arr\Arr::CreateDateArray("2014-01-01", "2014-01-20", "+1 day", "m/d/Y");
 
