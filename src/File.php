@@ -2,126 +2,20 @@
 
 declare(strict_types=1);
 
-namespace think;
+namespace hulang\tool;
 
-use think\App;
-use think\facade\Config;
-use think\facade\View;
+/*
+** 文件及文件夹处理类
+*/
 
-abstract class Addons
+class File
 {
-    // app 容器
-    protected $app;
-    // 请求对象
-    protected $request;
-    // 当前插件标识
-    protected $name;
-    // 插件路径
-    protected $addon_path;
-    // 视图模型
-    protected $view;
-    // 插件配置
-    protected $addon_config;
-    // 插件信息
-    protected $addon_info;
-
-    /**
-     * 插件构造函数
-     * Addons constructor.
-     * @param \think\App $app
-     */
-    public function __construct(App $app)
-    {
-        $this->app = $app;
-        $this->request = $app->request;
-        $this->name = $this->getName();
-
-        $this->addon_path = $app->addons->getAddonsPath() . $this->name . DIRECTORY_SEPARATOR;
-        $this->addon_config = "addon_{$this->name}_config";
-        $this->addon_info = "addon_{$this->name}_info";
-
-        $this->view = clone View::engine('Think');
-        $this->view->config([
-            'view_path' => $this->addon_path . 'view' . DIRECTORY_SEPARATOR
-        ]);
-        // 控制器初始化
-        $this->initialize();
-    }
-
-    // 初始化
-    protected function initialize()
-    {
-    }
-
-    /**
-     * 获取插件标识
-     * @return mixed|null
-     */
-    final protected function getName()
-    {
-        $class = get_class($this);
-        [, $name,] = explode('\\', $class);
-        $this->request->addon = $name;
-
-        return $name;
-    }
-
-    /**
-     * 加载模板输出
-     * @param string $template
-     * @param array $vars           模板文件名
-     * @return mixed|false|string   模板输出变量
-     * @throws \think\Exception
-     */
-    protected function fetch($template = '', $vars = [])
-    {
-        return $this->view->fetch($template, $vars);
-    }
-
-    /**
-     * 渲染内容输出
-     * @access protected
-     * @param  string $content 模板内容
-     * @param  array  $vars    模板输出变量
-     * @return mixed
-     */
-    protected function display($content = '', $vars = [])
-    {
-        return $this->view->display($content, $vars);
-    }
-
-    /**
-     * 模板变量赋值
-     * @access protected
-     * @param  mixed $name  要显示的模板变量
-     * @param  mixed $value 变量的值
-     * @return mixed|$this
-     */
-    protected function assign($name, $value = '')
-    {
-        $this->view->assign([$name => $value]);
-
-        return $this;
-    }
-
-    /**
-     * 初始化模板引擎
-     * @access protected
-     * @param  array|string $engine 引擎参数
-     * @return mixed|$this
-     */
-    protected function engine($engine)
-    {
-        $this->view->engine($engine);
-
-        return $this;
-    }
     /**
      * 创建目录
      * @param string $dir 目录名
      * @return mixed|bool true 成功/false 失败
      */
-    final public function mkDir($dir)
+    public static function mkDir($dir)
     {
         $dir = rtrim($dir, '/') . '/';
         if (!is_dir($dir)) {
@@ -137,7 +31,7 @@ abstract class Addons
      * @param string $filename 文件名
      * @return mixed|string 文件内容
      */
-    final public function readFile($filename)
+    public static function readFile($filename)
     {
         $content = '';
         if (function_exists('file_get_contents')) {
@@ -157,7 +51,7 @@ abstract class Addons
      * @param string $openmod 打开方式
      * @return mixed|bool true 成功/false 失败
      */
-    final public function writeFile($filename, $writetext, $openmod = 'w')
+    public static function writeFile($filename, $writetext, $openmod = 'w')
     {
         if (@($fp = fopen($filename, $openmod))) {
             flock($fp, 2);
@@ -169,107 +63,215 @@ abstract class Addons
         }
     }
     /**
-     * 插件更新[info]配置文件
-     *
-     * @param string $name 插件名
-     * @param array $array 数据
-     * @return mixed|bool
+     * 删除文件
+     * @param string $filename 文件名
+     * @return mixed|bool true 成功/false 失败
      */
-    final public function setInfo($name = '', $array = [])
+    public static function delFile($filename)
     {
-        $path = $this->addon_path;
-        if (!empty($name)) {
-            $path = $this->app->addons->getAddonsPath() . $name . DIRECTORY_SEPARATOR;
+        if (file_exists($filename)) {
+            unlink($filename);
+            return true;
+        } else {
+            return false;
         }
-        $config = $path . 'info.json';
-        if (!is_file($path)) {
-            $this->mkDir($path);
+    }
+    /**
+     * 删除目录
+     * @param string $dirName 原目录
+     * @return mixed|bool true 成功/false 失败
+     */
+    public static function delDir($dirName)
+    {
+        if (!file_exists($dirName)) {
+            return false;
         }
+        $dir = opendir($dirName);
+        while ($fileName = readdir($dir)) {
+            $file = $dirName . '/' . $fileName;
+            if ($fileName != '.' && $fileName != '..') {
+                if (is_dir($file)) {
+                    self::delDir($file);
+                } else {
+                    unlink($file);
+                }
+            }
+        }
+        closedir($dir);
+        return rmdir($dirName);
+    }
+    /**
+     * 复制目录
+     * @param string $surDir 原目录
+     * @param string $toDir 目标目录
+     * @return mixed|bool true 成功/false 失败
+     */
+    public static function copyDir($surDir, $toDir)
+    {
+        $surDir = rtrim($surDir, '/') . '/';
+        $toDir = rtrim($toDir, '/') . '/';
+        if (!file_exists($surDir)) {
+            return false;
+        }
+        if (!file_exists($toDir)) {
+            self::mkDir($toDir);
+        }
+        $file = opendir($surDir);
+        while ($fileName = readdir($file)) {
+            $file1 = $surDir . '/' . $fileName;
+            $file2 = $toDir . '/' . $fileName;
+            if ($fileName != '.' && $fileName != '..') {
+                if (is_dir($file1)) {
+                    self::copyDir($file1, $file2);
+                } else {
+                    copy($file1, $file2);
+                }
+            }
+        }
+        closedir($file);
+        return true;
+    }
+    /**
+     * 得到指定目录里的信息
+     * @param string $path 原目录
+     * @return mixed|array
+     */
+    public static function getFolder($path = '')
+    {
+        if (!is_dir($path)) {
+            return null;
+        }
+        $path = rtrim($path, '/') . '/';
+        $path = realpath($path);
+        $flag = \FilesystemIterator::KEY_AS_FILENAME;
+        $glob = new \FilesystemIterator($path, $flag);
         $list = [];
-        foreach ($array as $k => $v) {
-            $list[$k] = $v;
-        }
-        $result = $this->writeFile($config, json_encode($array, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-        return $result;
-    }
-
-    /**
-     * 获取插件基础信息
-     * @return mixed|array
-     */
-    final public function getInfo()
-    {
-        $info = Config::get($this->addon_info, []);
-
-        if ($info) {
-            return $info;
-        }
-        // 文件配置
-        $info_file = $this->addon_path . 'info.json';
-        if (is_file($info_file)) {
-            $_info = json_decode($this->readFile($info_file), true);
-            $_info['url'] = addons_url();
-            $info = array_merge($_info, $info);
-        }
-        Config::set($info, $this->addon_info);
-
-        return isset($info) ? $info : [];
-    }
-    /**
-     * 插件更新[config]配置文件
-     *
-     * @param string $name 插件名
-     * @param array $array 数据
-     * @return mixed|bool
-     */
-    final public function setConfig($name = '', $array = [])
-    {
-        $path = $this->addon_path;
-        if (!empty($name)) {
-            $path = $this->app->addons->getAddonsPath() . $name . DIRECTORY_SEPARATOR;
-        }
-        $config = $path . 'config.json';
-        if (!is_file($path)) {
-            $this->mkDir($path);
-        }
-        $result = $this->writeFile($config, json_encode($array, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-        return $result;
-    }
-    /**
-     * 获取配置信息
-     * @param bool $type 是否获取完整配置
-     * @return mixed|array
-     */
-    final public function getConfig($type = false)
-    {
-        $config = Config::get($this->addon_config, []);
-
-        if ($config) {
-            return $config;
-        }
-        $config_file = $this->addon_path . 'config.json';
-
-        if (is_file($config_file)) {
-            $temp_arr = json_decode($this->readFile($config_file), true);
-
-            if ($type) {
-                return $temp_arr;
+        foreach ($glob as $k => $file) {
+            $dir_arr = [];
+            $dir_arr['name'] = self::convertEncoding($file->getFilename());
+            if ($file->isDir()) {
+                $dir_arr['type'] = 'dir';
+                $dir_arr['size'] = self::getFileSizeFormat(self::getDirSize($file->getPathname()));
+                $dir_arr['ext'] = '';
+            } else {
+                $dir_arr['type'] = 'file';
+                $dir_arr['size'] = self::getFileSizeFormat($file->getSize());
+                $dir_arr['ext'] = $file->getExtension();
             }
-
-            foreach ($temp_arr as $key => $value) {
-                $config[$key] = $value['value'];
-            }
-            unset($temp_arr);
+            $dir_arr['path_name'] = $file->getPathname();
+            $dir_arr['atime'] = $file->getATime();
+            $dir_arr['mtime'] = $file->getMTime();
+            $dir_arr['ctime'] = $file->getCTime();
+            $dir_arr['is_readable'] = $file->isReadable();
+            $dir_arr['is_writeable'] = $file->isWritable();
+            $dir_arr['base_name'] = $file->getBasename();
+            $dir_arr['group'] = $file->getGroup();
+            $dir_arr['inode'] = $file->getInode();
+            $dir_arr['owner'] = $file->getOwner();
+            $dir_arr['path'] = $file->getPath();
+            $dir_arr['perms'] = $file->getPerms();
+            $dir_arr['tp'] = $file->getType();
+            $dir_arr['is_executable'] = $file->isExecutable();
+            $dir_arr['is_file'] = $file->isFile();
+            $dir_arr['is_link'] = $file->isLink();
+            $list[$k] = $dir_arr;
         }
-
-        Config::set($config, $this->addon_config);
-
-        return $config;
+        $list == 1 ? sort($list) : rsort($list);
+        return $list;
     }
-
-    // 必须实现安装
-    abstract public function install();
-
-    // 必须卸载插件方法
-    abstract public function uninstall();
+    /**
+     * 统计文件夹大小
+     * @param string $dir 目录名
+     * @return mixed|int 文件夹大小(单位 B)
+     */
+    public static function getDirSize($dir)
+    {
+        $dirlist = opendir($dir);
+        $dirsize = 0;
+        while (false !== ($folderorfile = readdir($dirlist))) {
+            if ($folderorfile != '.' && $folderorfile != '..') {
+                $new_dir = $dir . '/' . $folderorfile;
+                if (is_dir($new_dir)) {
+                    $dirsize += self::getDirSize($new_dir);
+                } else {
+                    $dirsize += filesize($new_dir);
+                }
+            }
+        }
+        closedir($dirlist);
+        return $dirsize;
+    }
+    /**
+     * 检测是否为空文件夹
+     * @param string $dir 目录名
+     * @return mixed true 空/fasle 不为空
+     */
+    public static function emptyDir($dir)
+    {
+        return ($files = @scandir($dir)) && count($files) <= 2;
+    }
+    /**
+     * 文件大小格式
+     * @param $byte int 大小
+     * @return mixed|int
+     */
+    public static function getFileSizeFormat($byte)
+    {
+        if ($byte < 1024) {
+            $unit = 'B';
+        } else if ($byte < 10240) {
+            $byte = self::roundDp($byte / 1024, 2);
+            $unit = 'KB';
+        } else if ($byte < 102400) {
+            $byte = self::roundDp($byte / 1024, 2);
+            $unit = 'KB';
+        } else if ($byte < 1048576) {
+            $byte = self::roundDp($byte / 1024, 2);
+            $unit = 'KB';
+        } else if ($byte < 10485760) {
+            $byte = self::roundDp($byte / 1048576, 2);
+            $unit = 'MB';
+        } else if ($byte < 104857600) {
+            $byte = self::roundDp($byte / 1048576, 2);
+            $unit = 'MB';
+        } else if ($byte < 1073741824) {
+            $byte = self::roundDp($byte / 1048576, 2);
+            $unit = 'MB';
+        } else {
+            $byte = self::roundDp($byte / 1073741824, 2);
+            $unit = 'GB';
+        }
+        $byte .= $unit;
+        return $byte;
+    }
+    /**
+     * 辅助函数 round_up(),该函数用来取舍小数点位数的,四舍五入
+     * @return mixed|int
+     */
+    public static function roundDp($num, $dp)
+    {
+        $sh = pow(10, $dp);
+        return (round($num * $sh) / $sh);
+    }
+    /**
+     * 获取文件扩展名
+     * @param string $fileName 文件名
+     * @return mixed|string 扩展名
+     */
+    public static function getFileExt($fileName)
+    {
+        return strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+    }
+    /**
+     * 转换字符编码
+     * @param string $string 字符串
+     * @return mixed|string
+     */
+    public static function convertEncoding($string)
+    {
+        //根据系统进行配置
+        $encode = stristr(PHP_OS, 'WIN') ? 'GBK' : 'UTF-8';
+        $string = iconv($encode, 'UTF-8', $string);
+        return $string;
+    }
 }
