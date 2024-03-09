@@ -175,7 +175,7 @@ class Time
      * @param int $day 天数
      * @return mixed|array
      */
-    public static function daysAfterTimeStamp($day = 1)
+    public static function getDaysAfterTimeStamp($day = 1)
     {
         $nowTime = time();
         $result = $nowTime + self::daysToSecond($day);
