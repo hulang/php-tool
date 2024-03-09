@@ -182,7 +182,8 @@ class Time
         $start = strtotime(date('Y-m-d 00:00:00', $result));
         $end = strtotime(date('Y-m-d 23:59:59', $result));
         //
-        return [$start, $end];
+        $arr = [$start, $end];
+        return $arr;
     }
     /**
      * 天数转换成秒数
