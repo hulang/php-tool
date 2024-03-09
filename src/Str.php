@@ -24,13 +24,15 @@ class Str
      */
     public static function Contains(string $haystack, $needles)
     {
-        foreach ((array) $needles as $needle) {
-            if ($needle != '' && mb_strpos($haystack, $needle) !== false) {
-                return true;
+        $result = false;
+        if (!empty($needles)) {
+            foreach ((array) $needles as $needle) {
+                if ($needle != '' && mb_strpos($haystack, $needle) !== false) {
+                    $result = true;
+                }
             }
         }
-
-        return false;
+        return $result;
     }
 
     /**
@@ -42,13 +44,15 @@ class Str
      */
     public static function EndsWith(string $haystack, $needles)
     {
-        foreach ((array) $needles as $needle) {
-            if ((string) $needle === static::SubStr($haystack, -static::Length($needle))) {
-                return true;
+        $result = false;
+        if (!empty($needles)) {
+            foreach ((array) $needles as $needle) {
+                if ((string) $needle === static::SubStr($haystack, -static::Length($needle))) {
+                    $result = true;
+                }
             }
         }
-
-        return false;
+        return $result;
     }
 
     /**
@@ -60,13 +64,15 @@ class Str
      */
     public static function StartsWith(string $haystack, $needles)
     {
-        foreach ((array) $needles as $needle) {
-            if ($needle != '' && mb_strpos($haystack, $needle) === 0) {
-                return true;
+        $result = false;
+        if (!empty($needles)) {
+            foreach ((array) $needles as $needle) {
+                if ($needle != '' && mb_strpos($haystack, $needle) === 0) {
+                    $result = true;
+                }
             }
         }
-
-        return false;
+        return $result;
     }
 
     /**
@@ -157,7 +163,8 @@ class Str
      */
     public static function SubStr(string $string, int $start, int $length = null)
     {
-        return mb_substr($string, $start, $length, 'UTF-8');
+        $result = mb_substr($string, $start, $length, 'UTF-8');
+        return $result;
     }
 
     /**
@@ -180,8 +187,8 @@ class Str
 
             $value = static::Lower(preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
         }
-
-        return static::$snakeCache[$key][$delimiter] = $value;
+        $result = static::$snakeCache[$key][$delimiter] = $value;
+        return $result;
     }
 
     /**
@@ -195,8 +202,8 @@ class Str
         if (isset(static::$camelCache[$value])) {
             return static::$camelCache[$value];
         }
-
-        return static::$camelCache[$value] = lcfirst(static::Studly($value));
+        $result = static::$camelCache[$value] = lcfirst(static::Studly($value));
+        return $result;
     }
 
     /**
@@ -208,14 +215,12 @@ class Str
     public static function Studly(string $value)
     {
         $key = $value;
-
         if (isset(static::$studlyCache[$key])) {
             return static::$studlyCache[$key];
         }
-
         $value = ucwords(str_replace(['-', '_'], ' ', $value));
-
-        return static::$studlyCache[$key] = str_replace(' ', '', $value);
+        $result = static::$studlyCache[$key] = str_replace(' ', '', $value);
+        return $result;
     }
 
     /**
@@ -226,6 +231,149 @@ class Str
      */
     public static function Title(string $value)
     {
-        return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+        $result = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+        return $result;
+    }
+    /**
+     * 生成 UUID 编码
+     * @return mixed|string
+     */
+    public static function uuid()
+    {
+        $chars = md5(uniqid(strval(mt_rand(0, 9999)), true));
+        $value = substr($chars, 0, 8) . '-' . substr($chars, 8, 4) . '-';
+        $value .= substr($chars, 12, 4) . '-' . substr($chars, 16, 4) . '-';
+        $result = strtoupper($value . substr($chars, 20, 12));
+        return $result;
+    }
+
+    /**
+     * 生成日期编码
+     * @param integer $size 编码长度
+     * @param string $prefix 编码前缀
+     * @return mixed|string
+     */
+    public static function uniqidDate(int $size = 16, string $prefix = '')
+    {
+        if ($size < 14) {
+            $size = 14;
+        }
+        $code = $prefix . date('Ymd') . (date('H') + date('i')) . date('s');
+        while (strlen($code) < $size) {
+            $code .= rand(0, 9);
+        }
+        return $code;
+    }
+
+    /**
+     * 生成数字编码
+     * @param integer $size 编码长度
+     * @param string $prefix 编码前缀
+     * @return mixed|string
+     */
+    public static function uniqidNumber(int $size = 12, string $prefix = '')
+    {
+        $time = strval(time());
+        if ($size < 10) {
+            $size = 10;
+        }
+        $code = $prefix . (intval($time[0]) + intval($time[1])) . substr($time, 2) . rand(0, 9);
+        while (strlen($code) < $size) {
+            $code .= rand(0, 9);
+        }
+        return $code;
+    }
+
+    /**
+     * 文本转码
+     * @param string $text 文本内容
+     * @param string $target 目标编码
+     * @return mixed|string
+     */
+    public static function text2utf8(string $text, string $target = 'UTF-8')
+    {
+        [$first2, $first4] = [substr($text, 0, 2), substr($text, 0, 4)];
+        if ($first4 === chr(0x00) . chr(0x00) . chr(0xFE) . chr(0xFF)) {
+            $ft = 'UTF-32BE';
+        } elseif ($first4 === chr(0xFF) . chr(0xFE) . chr(0x00) . chr(0x00)) {
+            $ft = 'UTF-32LE';
+        } elseif ($first2 === chr(0xFE) . chr(0xFF)) {
+            $ft = 'UTF-16BE';
+        } elseif ($first2 === chr(0xFF) . chr(0xFE)) {
+            $ft = 'UTF-16LE';
+        }
+        $result = mb_convert_encoding($text, $target, $ft ?? mb_detect_encoding($text));
+        return $result;
+    }
+
+    /**
+     * 数据解密处理
+     * @param mixed $data 加密数据
+     * @param string $skey 安全密钥
+     * @return mixed|string
+     */
+    public static function encrypt($data, string $skey)
+    {
+        $iv = self::random(16, 3);
+        $value = openssl_encrypt(serialize($data), 'AES-256-CBC', $skey, 0, $iv);
+        $result = self::enSafe64(json_encode(['iv' => $iv, 'value' => $value]));
+        return $result;
+    }
+
+    /**
+     * 数据加密处理
+     * @param string $data 解密数据
+     * @param string $skey 安全密钥
+     * @return mixed|mixed
+     */
+    public static function decrypt(string $data, string $skey)
+    {
+        $attr = json_decode(self::deSafe64($data), true);
+        $result = unserialize(openssl_decrypt($attr['value'], 'AES-256-CBC', $skey, 0, $attr['iv']));
+        return $result;
+    }
+
+    /**
+     * Base64Url 安全编码
+     * @param string $text 待加密文本
+     * @return mixed|string
+     */
+    public static function enSafe64(string $text)
+    {
+        $result = rtrim(strtr(base64_encode($text), '+/', '-_'), '=');
+        return $result;
+    }
+
+    /**
+     * Base64Url 安全解码
+     * @param string $text 待解密文本
+     * @return mixed|string
+     */
+    public static function deSafe64(string $text)
+    {
+        $result = base64_decode(str_pad(strtr($text, '-_', '+/'), strlen($text) % 4, '='));
+        return $result;
+    }
+
+    /**
+     * 压缩数据对象
+     * @param mixed $data
+     * @return mixed|string
+     */
+    public static function enzip($data)
+    {
+        $result = self::enSafe64(gzcompress(serialize($data)));
+        return $result;
+    }
+
+    /**
+     * 解压数据对象
+     * @param string $string
+     * @return mixed|mixed
+     */
+    public static function dezip(string $string)
+    {
+        $result = unserialize(gzuncompress(self::deSafe64($string)));
+        return $result;
     }
 }
