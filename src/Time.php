@@ -228,7 +228,7 @@ class Time
      * @param int|string $datetime 要转换为时间戳的字符串或数字,如果为空则返回当前时间戳
      * @return mixed|int 时间戳
      */
-    public static function toTimestamp($datetime = null)
+    public static function toTimestamp($datetime = null): int
     {
         if (empty($datetime)) {
             return time();
@@ -243,10 +243,30 @@ class Time
             if ($timestamp) {
                 return $timestamp;
             } else {
-                //强制转化时间格式
-                $datetime = self::formatSpecialDateTime($datetime);
-                if ($datetime !== false) {
-                    return strtotime($datetime);
+                /* 尝试处理特殊的日期格式 */
+                [$date, $time] = explode(' ', $datetime);
+                if ($date) {
+                    //获取时间的格式
+                    $time_format_str = '';
+                    if ($time) {
+                        foreach (self::$time_formats as $time_format) {
+                            if (date_create_from_format($time_format, $time) !== false) {
+                                $time_format_str = $time_format;
+                                break;
+                            }
+                        }
+                    }
+                    foreach (self::$date_formats as $date_format) {
+                        //获取日期的格式
+                        if (date_create_from_format($date_format, $date) !== false) {
+                            $datetime_format = ($time_format_str) ? "$date_format $time_format_str" : $date_format;
+                            //获取日期时间对象
+                            $datetime_obj = date_create_from_format($datetime_format, $datetime);
+                            if ($datetime_obj !== false) {
+                                return strtotime($datetime_obj->format('Y-m-d' . ($time_format_str ? ' H:i:s' : '')));
+                            }
+                        }
+                    }
                 }
                 throw new InvalidArgumentException('Param datetime must be a timestamp or a string time');
             }
@@ -854,44 +874,6 @@ class Time
         } else {
             return 0;
         }
-    }
-    /**
-     * 格式化特殊日期时间
-     * @param string $datetime
-     * @param string|null $format 参数为空则根据日期时间自动格式化为 Y-m-d 或 Y-m-d H:i:s
-     * @return mixed|bool|string
-     */
-    public static function formatSpecialDateTime(string $datetime, string $format = null)
-    {
-        [$date, $time] = explode(' ', $datetime);
-        if (!$date) {
-            return false;
-        }
-        //获取时间的格式
-        $time_format_str = '';
-        if ($time) {
-            foreach (self::$time_formats as $time_format) {
-                if (date_create_from_format($time_format, $time) !== false) {
-                    $time_format_str = $time_format;
-                    break;
-                }
-            }
-        }
-        foreach (self::$date_formats as $date_format) {
-            //获取日期的格式
-            if (date_create_from_format($date_format, $date) !== false) {
-                $datetime_format = ($time_format_str) ? "$date_format $time_format_str" : $date_format;
-                //获取日期时间对象
-                $datetime_obj = date_create_from_format($datetime_format, $datetime);
-                if ($datetime_obj !== false) {
-                    if ($format) {
-                        return $datetime_obj->format($format);
-                    }
-                    return $datetime_obj->format('Y-m-d' . ($time_format_str ? ' H:i:s' : ''));
-                }
-            }
-        }
-        return false;
     }
     /**
      * 根据|时间字符串或时间戳|返回传递的开始时间和结束时间
