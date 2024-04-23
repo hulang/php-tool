@@ -13,9 +13,9 @@ class File
     /**
      * 创建目录
      * @param string $dir 目录名
-     * @return mixed|bool true 成功/false 失败
+     * @return mixed|bool
      */
-    public static function mkDir($dir)
+    public static function mkDir($dir = '')
     {
         $dir = rtrim($dir, '/') . '/';
         if (!is_dir($dir)) {
@@ -29,18 +29,13 @@ class File
     /**
      * 读取文件内容
      * @param string $filename 文件名
-     * @return mixed|string 文件内容
+     * @return mixed|string
      */
-    public static function readFile($filename)
+    public static function readFile($filename = '')
     {
         $content = '';
-        if (function_exists('file_get_contents')) {
-            @($content = file_get_contents($filename));
-        } else {
-            if (@($fp = fopen($filename, 'r'))) {
-                @($content = fread($fp, filesize($filename)));
-                @fclose($fp);
-            }
+        if (!empty($filename) && is_file($filename)) {
+            $content = file_get_contents($filename);
         }
         return $content;
     }
@@ -48,16 +43,18 @@ class File
      * 写文件
      * @param string $filename 文件名
      * @param string $writetext 文件内容
-     * @param string $openmod 打开方式
-     * @return mixed|bool true 成功/false 失败
+     * @param string $mode 写入文件模式
+     * @return mixed|bool
      */
-    public static function writeFile($filename, $writetext, $openmod = 'w')
+    public static function writeFile($filename = '', $writetext = '', $mode = LOCK_EX)
     {
-        if (@($fp = fopen($filename, $openmod))) {
-            flock($fp, 2);
-            fwrite($fp, $writetext);
-            fclose($fp);
-            return true;
+        if (!empty($filename) && !empty($writetext)) {
+            $size = file_put_contents($filename, $writetext, $mode);
+            if ($size > 0) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -65,9 +62,9 @@ class File
     /**
      * 删除文件
      * @param string $filename 文件名
-     * @return mixed|bool true 成功/false 失败
+     * @return mixed|bool
      */
-    public static function delFile($filename)
+    public static function delFile($filename = '')
     {
         if (file_exists($filename)) {
             unlink($filename);
@@ -79,9 +76,9 @@ class File
     /**
      * 删除目录
      * @param string $dirName 原目录
-     * @return mixed|bool true 成功/false 失败
+     * @return mixed|bool
      */
-    public static function delDir($dirName)
+    public static function delDir($dirName = '')
     {
         if (!file_exists($dirName)) {
             return false;
@@ -104,7 +101,7 @@ class File
      * 复制目录
      * @param string $surDir 原目录
      * @param string $toDir 目标目录
-     * @return mixed|bool true 成功/false 失败
+     * @return mixed|bool
      */
     public static function copyDir($surDir, $toDir)
     {
@@ -204,7 +201,7 @@ class File
     /**
      * 检测是否为空文件夹
      * @param string $dir 目录名
-     * @return mixed true 空/fasle 不为空
+     * @return mixed
      */
     public static function emptyDir($dir)
     {
@@ -256,7 +253,7 @@ class File
     /**
      * 获取文件扩展名
      * @param string $fileName 文件名
-     * @return mixed|string 扩展名
+     * @return mixed|string
      */
     public static function getFileExt($fileName)
     {
