@@ -183,20 +183,19 @@ class File
      */
     public static function getDirSize($dir)
     {
-        $dirlist = opendir($dir);
-        $dirsize = 0;
-        while (false !== ($folderorfile = readdir($dirlist))) {
-            if ($folderorfile != '.' && $folderorfile != '..') {
-                $new_dir = $dir . '/' . $folderorfile;
-                if (is_dir($new_dir)) {
-                    $dirsize += self::getDirSize($new_dir);
+        $size = 0;
+        $directoryIterator = new \DirectoryIterator($dir);
+        foreach ($directoryIterator as $fileInfo) {
+            if (!$fileInfo->isDot()) {
+                $filename = $fileInfo->getPathname();
+                if ($fileInfo->isDir()) {
+                    $size += self::getDirSize($filename);
                 } else {
-                    $dirsize += filesize($new_dir);
+                    $size += filesize($filename);
                 }
             }
         }
-        closedir($dirlist);
-        return $dirsize;
+        return $size;
     }
     /**
      * 检测是否为空文件夹
