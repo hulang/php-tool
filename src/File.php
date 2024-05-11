@@ -7,7 +7,6 @@ namespace hulang\tool;
 /*
 ** 文件及文件夹处理类
 */
-
 class File
 {
     /**
