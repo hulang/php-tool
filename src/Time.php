@@ -377,11 +377,29 @@ class Time
     public static function isToday($datetime)
     {
         $timestamp = self::toTimestamp($datetime);
-        if (date('Y-m-d', $timestamp) == date('Y-m-d')) {
-            return true;
-        } else {
-            return false;
-        }
+        return date('Y-m-d', $timestamp) == date('Y-m-d');
+    }
+
+    /**
+     * 判断日期是否为昨天
+     * @param string|int $datetime 时间日期
+     * @return bool 如果是昨天则返回True,否则返回False
+     */
+    public static function isYesterday($datetime)
+    {
+        $timestamp = self::toTimestamp($datetime);
+        return date('Y-m-d', $timestamp) == date('Y-m-d', strtotime('-1 day'));
+    }
+
+    /**
+     * 判断日期是否为明天
+     * @param string|int $datetime 时间日期
+     * @return bool 如果是昨天则返回True,否则返回False
+     */
+    public static function isTomorrow($datetime)
+    {
+        $timestamp = self::toTimestamp($datetime);
+        return date('Y-m-d', $timestamp) == date('Y-m-d', strtotime('+1 day'));
     }
 
     /**
