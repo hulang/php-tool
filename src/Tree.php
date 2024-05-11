@@ -7,6 +7,7 @@ namespace hulang\tool;
 /**
  * 无限分级类
  */
+
 class Tree
 {
     /** 子孙树按等级显示
@@ -48,6 +49,7 @@ class Tree
                     $arr = [];
                     $arr = self::getSubTreeList($data, $parent, $son, $v[$son], $child);
                     if (!empty($arr)) {
+                        $v['count'] = count($arr);
                         $v[$child] = $arr;
                     }
                     $tmp[] = $v;
