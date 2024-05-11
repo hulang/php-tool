@@ -6,8 +6,8 @@ namespace hulang\tool;
 
 /**
  * 这个类专门用于判断国内的节假日,比如:某天是否为工作日/节假日
- * https://github.com/zjkal/time-helper
- * 2024-04-25
+ * Class ChinaHoliday
+ * @package zjkal
  */
 class ChinaHoliday
 {
@@ -33,14 +33,14 @@ class ChinaHoliday
      * @param string|int $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return mixed|bool 是返回True,否则返回False
      */
-    public static function isWorkday($datetime = null)
+    public static function isWorkday($datetime = null): bool
     {
-        $y = Time::format('Y', $datetime);
-        $md = Time::format('md', $datetime);
+        $y = TimeHelper::format('Y', $datetime);
+        $md = TimeHelper::format('md', $datetime);
         //为平常日 且 (该年份不存在节日 或 该日期不是节日)
-        $condition1 = Time::isWeekday($datetime) && (!array_key_exists($y, self::$holiday) || !in_array($md, self::$holiday[$y]));
+        $condition1 = TimeHelper::isWeekday($datetime) && (!array_key_exists($y, self::$holiday) || !in_array($md, self::$holiday[$y]));
         //为周末 且 该年份存在调休日 且 该日期是调休日
-        $condition2 = Time::isWeekend($datetime) && array_key_exists($y, self::$workday) && in_array($md, self::$workday[$y]);
+        $condition2 = TimeHelper::isWeekend($datetime) && array_key_exists($y, self::$workday) && in_array($md, self::$workday[$y]);
         return $condition1 || $condition2;
     }
 
@@ -49,7 +49,7 @@ class ChinaHoliday
      * @param string|int $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return mixed|bool 是返回True,否则返回False
      */
-    public static function isHoliday($datetime = null)
+    public static function isHoliday($datetime = null): bool
     {
         return !self::isWorkday($datetime);
     }
