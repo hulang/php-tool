@@ -12,7 +12,7 @@ use InvalidArgumentException;
 /**
  * 最方便的PHP时间助手类, 所有方法都可以传入任意类型的时间日期格式或者时间戳
  * https://github.com/zjkal/time-helper
- * 2023-10-29
+ * 2024-04-25T09:22:53Z
  */
 class Time
 {
