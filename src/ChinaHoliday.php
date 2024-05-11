@@ -7,7 +7,7 @@ namespace hulang\tool;
 /**
  * 这个类专门用于判断国内的节假日,比如:某天是否为工作日/节假日
  * https://github.com/zjkal/time-helper
- * 2023-10-25
+ * 2024-04-25
  */
 class ChinaHoliday
 {
