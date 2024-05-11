@@ -7,7 +7,6 @@ namespace hulang\tool;
 /*
 ** 字符串操作类
 */
-
 class Str
 {
     protected static $snakeCache = [];
@@ -18,7 +17,7 @@ class Str
 
     /**
      * 检查字符串中是否包含某些字符串
-     * @param string       $haystack
+     * @param string $haystack
      * @param string|array $needles
      * @return mixed|bool
      */
@@ -38,8 +37,8 @@ class Str
     /**
      * 检查字符串是否以某些字符串结尾
      *
-     * @param  string       $haystack
-     * @param  string|array $needles
+     * @param string $haystack
+     * @param string|array $needles
      * @return mixed|bool
      */
     public static function EndsWith(string $haystack, $needles)
@@ -58,8 +57,8 @@ class Str
     /**
      * 检查字符串是否以某些字符串开头
      *
-     * @param  string       $haystack
-     * @param  string|array $needles
+     * @param string $haystack
+     * @param string|array $needles
      * @return mixed|bool
      */
     public static function StartsWith(string $haystack, $needles)
@@ -78,9 +77,9 @@ class Str
     /**
      * 获取指定长度的随机字母数字组合的字符串
      *
-     * @param  int $length
-     * @param  int $type
-     * @param  string $addChars
+     * @param int $length
+     * @param int $type
+     * @param string $addChars
      * @return mixed|string
      */
     public static function Random(int $length = 6, int $type = null, string $addChars = '')
@@ -123,7 +122,7 @@ class Str
     /**
      * 字符串转小写
      *
-     * @param  string $value
+     * @param string $value
      * @return mixed|string
      */
     public static function Lower(string $value)
@@ -134,7 +133,7 @@ class Str
     /**
      * 字符串转大写
      *
-     * @param  string $value
+     * @param string $value
      * @return mixed|string
      */
     public static function Upper(string $value)
@@ -145,7 +144,7 @@ class Str
     /**
      * 获取字符串的长度
      *
-     * @param  string $value
+     * @param string $value
      * @return mixed|int
      */
     public static function Length(string $value)
@@ -156,9 +155,9 @@ class Str
     /**
      * 截取字符串
      *
-     * @param  string   $string
-     * @param  int      $start
-     * @param  int|null $length
+     * @param string $string
+     * @param int $start
+     * @param int|null $length
      * @return mixed|string
      */
     public static function SubStr(string $string, int $start, int $length = null)
@@ -170,8 +169,8 @@ class Str
     /**
      * 驼峰转下划线
      *
-     * @param  string $value
-     * @param  string $delimiter
+     * @param string $value
+     * @param string $delimiter
      * @return mixed|string
      */
     public static function Snake(string $value, string $delimiter = '_')
@@ -194,7 +193,7 @@ class Str
     /**
      * 下划线转驼峰(首字母小写)
      *
-     * @param  string $value
+     * @param string $value
      * @return mixed|string
      */
     public static function Camel(string $value)
@@ -209,7 +208,7 @@ class Str
     /**
      * 下划线转驼峰(首字母大写)
      *
-     * @param  string $value
+     * @param string $value
      * @return mixed|string
      */
     public static function Studly(string $value)
@@ -226,7 +225,7 @@ class Str
     /**
      * 转为首字母大写的标题格式
      *
-     * @param  string $value
+     * @param string $value
      * @return mixed|string
      */
     public static function Title(string $value)
