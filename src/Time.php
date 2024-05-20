@@ -172,7 +172,6 @@ class Time extends TimeHelper
         $result = $nowTime + self::daysToSecond($day);
         $start = strtotime(date('Y-m-d 00:00:00', $result));
         $end = strtotime(date('Y-m-d 23:59:59', $result));
-        //
         $arr = [$start, $end];
         return $arr;
     }
@@ -287,7 +286,6 @@ class Time extends TimeHelper
         $timestamp = self::toTimestamp($datetime);
         $start = strtotime(date('Y-m-d 00:00:00', $timestamp));
         $end = strtotime(date('Y-m-d 23:59:59', $timestamp));
-        //
         return [$start, $end];
     }
     /**
