@@ -198,6 +198,41 @@ class Time extends TimeHelper
     }
 
     /**
+     * 获取两个时间|天数/小时数/分钟数/秒数
+     * @param string $begin_time 开始时间
+     * @param string $end_time 结束时间
+     * @return mixed|array
+     */
+    public static function getTimeDiff($begin_time, $end_time)
+    {
+        if ($begin_time < $end_time) {
+            $starttime = $begin_time;
+            $endtime = $end_time;
+        } else {
+            $starttime = $end_time;
+            $endtime = $begin_time;
+        }
+        // 计算天数
+        $timediff = $endtime - $starttime;
+        $days = intval($timediff / 86400);
+        // 计算小时数
+        $remain = $timediff % 86400;
+        $hours = intval($remain / 3600);
+        // 计算分钟数
+        $remain = $remain % 3600;
+        $mins = intval($remain / 60);
+        // 计算秒数
+        $secs = $remain % 60;
+        $result = [
+            'day' => $days,
+            'hour' => $hours,
+            'min' => $mins,
+            'sec' => $secs
+        ];
+        return $result;
+    }
+
+    /**
      * 返回两个日期相差天数(如果只传入一个日期,则与当天时间比较)
      * @param int|string $datetime 要计算的时间
      * @param int|string $new_datetime 要比较的时间(默认为当前时间)
