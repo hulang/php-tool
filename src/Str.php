@@ -233,6 +233,7 @@ class Str
         $result = mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
         return $result;
     }
+
     /**
      * 生成 UUID 编码
      * @return mixed|string
@@ -242,8 +243,7 @@ class Str
         $chars = md5(uniqid(strval(mt_rand(0, 9999)), true));
         $value = substr($chars, 0, 8) . '-' . substr($chars, 8, 4) . '-';
         $value .= substr($chars, 12, 4) . '-' . substr($chars, 16, 4) . '-';
-        $result = strtoupper($value . substr($chars, 20, 12));
-        return $result;
+        return strtoupper($value . substr($chars, 20, 12));
     }
 
     /**
@@ -301,8 +301,7 @@ class Str
         } elseif ($first2 === chr(0xFF) . chr(0xFE)) {
             $ft = 'UTF-16LE';
         }
-        $result = mb_convert_encoding($text, $target, $ft ?? mb_detect_encoding($text));
-        return $result;
+        return mb_convert_encoding($text, $target, $ft ?? mb_detect_encoding($text));
     }
 
     /**
@@ -315,8 +314,7 @@ class Str
     {
         $iv = self::random(16, 3);
         $value = openssl_encrypt(serialize($data), 'AES-256-CBC', $skey, 0, $iv);
-        $result = self::enSafe64(json_encode(['iv' => $iv, 'value' => $value]));
-        return $result;
+        return self::enSafe64(json_encode(['iv' => $iv, 'value' => $value]));
     }
 
     /**
@@ -328,8 +326,7 @@ class Str
     public static function decrypt(string $data, string $skey)
     {
         $attr = json_decode(self::deSafe64($data), true);
-        $result = unserialize(openssl_decrypt($attr['value'], 'AES-256-CBC', $skey, 0, $attr['iv']));
-        return $result;
+        return unserialize(openssl_decrypt($attr['value'], 'AES-256-CBC', $skey, 0, $attr['iv']));
     }
 
     /**
@@ -339,8 +336,7 @@ class Str
      */
     public static function enSafe64(string $text)
     {
-        $result = rtrim(strtr(base64_encode($text), '+/', '-_'), '=');
-        return $result;
+        return rtrim(strtr(base64_encode($text), '+/', '-_'), '=');
     }
 
     /**
@@ -350,8 +346,7 @@ class Str
      */
     public static function deSafe64(string $text)
     {
-        $result = base64_decode(str_pad(strtr($text, '-_', '+/'), strlen($text) % 4, '='));
-        return $result;
+        return base64_decode(str_pad(strtr($text, '-_', '+/'), strlen($text) % 4, '='));
     }
 
     /**
@@ -361,8 +356,7 @@ class Str
      */
     public static function enzip($data)
     {
-        $result = self::enSafe64(gzcompress(serialize($data)));
-        return $result;
+        return self::enSafe64(gzcompress(serialize($data)));
     }
 
     /**
@@ -372,7 +366,6 @@ class Str
      */
     public static function dezip(string $string)
     {
-        $result = unserialize(gzuncompress(self::deSafe64($string)));
-        return $result;
+        return unserialize(gzuncompress(self::deSafe64($string)));
     }
 }
