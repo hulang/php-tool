@@ -24,13 +24,13 @@ class Phone
     public $post_code = '';
     public $tel_prefix = '';
     public $sp = '';
+
     public function __construct()
     {
         $this->db_path = join(DIRECTORY_SEPARATOR, [__DIR__, 'db', 'phone.dat']);
         $this->_fileHandle = fopen($this->db_path, 'r');
         $this->_fileSize = filesize($this->db_path);
     }
-
     /**
      * 查找单个手机号码归属地信息
      * @param string $phone 手机号码
@@ -74,9 +74,11 @@ class Phone
                 break;
             }
         }
+
         [$this->province, $this->city, $this->post_code, $this->tel_prefix, $this->sp] = explode('|', $item);
 
         $address = join($separator, [$this->province, $this->city, $this->sp]);
+
         $this->tel_address_list = [
             'address' => $address,
             'province' => $this->province,
@@ -93,7 +95,6 @@ class Phone
     {
         return $this->tel_address_list;
     }
-
     /**
      * 获取省份
      * @return mixed|string
@@ -102,7 +103,6 @@ class Phone
     {
         return $this->province;
     }
-
     /**
      * 获取市
      * @return mixed|string
@@ -111,7 +111,6 @@ class Phone
     {
         return $this->city;
     }
-
     /**
      * @return mixed|string
      */
@@ -119,7 +118,6 @@ class Phone
     {
         return $this->sp;
     }
-
     /**
      * 结构方法
      * */
