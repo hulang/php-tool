@@ -7,6 +7,7 @@ namespace hulang\tool;
 /*
 ** 文件及文件夹处理类
 */
+
 class File
 {
     /**
@@ -16,14 +17,31 @@ class File
      */
     public static function mkDir($dir = '')
     {
-        $dir = rtrim($dir, '/') . '/';
+        $result = false;
+        // 创建一个新目录,权限设置为 0755
         if (!is_dir($dir)) {
-            if (mkdir($dir, 0700) == false) {
-                return false;
+            if (mkdir($dir, 0755, true)) {
+                $result = true;
+            } else {
+                $result = false;
             }
-            return true;
+        } else {
+            $result = false;
         }
-        return true;
+        return $result;
+    }
+    /**
+     * 获取文件属性
+     * @param string $filename 文件名
+     * @return mixed|SplFileInfo
+     */
+    public static function getFileAttr($filename = '')
+    {
+        $content = '';
+        if (!empty($filename) && is_file($filename)) {
+            $content = new \SplFileInfo($filename);
+        }
+        return $content;
     }
     /**
      * 读取文件内容
@@ -48,6 +66,8 @@ class File
     public static function writeFile($filename = '', $writetext = '', $mode = LOCK_EX)
     {
         if (!empty($filename) && !empty($writetext)) {
+            $fileArr = pathinfo($filename);
+            self::mkDir($fileArr['dirname']);
             $size = file_put_contents($filename, $writetext, $mode);
             if ($size > 0) {
                 return true;
@@ -144,7 +164,7 @@ class File
         $list = [];
         foreach ($glob as $k => $file) {
             $dir_arr = [];
-            $dir_arr['name'] = self::convertEncoding($file->getFilename());
+            $dir_arr['name'] = self::getConvertEncoding($file->getFilename());
             if ($file->isDir()) {
                 $dir_arr['type'] = 'dir';
                 $dir_arr['size'] = self::getFileSizeFormat(self::getDirSize($file->getPathname()));
@@ -178,7 +198,7 @@ class File
     /**
      * 统计文件夹大小
      * @param string $dir 目录名
-     * @return mixed|int 文件夹大小(单位 B)
+     * @return mixed|int 文件夹大小(单位|B)
      */
     public static function getDirSize($dir)
     {
@@ -203,49 +223,53 @@ class File
      */
     public static function emptyDir($dir)
     {
-        return ($files = @scandir($dir)) && count($files) <= 2;
+        $result = ($files = @scandir($dir)) && count($files) <= 2;
+        return $result;
     }
     /**
      * 文件大小格式
-     * @param $byte int 大小
+     * @param int $byte 大小
      * @return mixed|int
      */
-    public static function getFileSizeFormat($byte)
+    public static function getFileSizeFormat($byte = 0)
     {
+        $unit = '';
         if ($byte < 1024) {
             $unit = 'B';
         } else if ($byte < 10240) {
-            $byte = self::roundDp($byte / 1024, 2);
+            $byte = self::getRoundPow($byte / 1024, 2);
             $unit = 'KB';
         } else if ($byte < 102400) {
-            $byte = self::roundDp($byte / 1024, 2);
+            $byte = self::getRoundPow($byte / 1024, 2);
             $unit = 'KB';
         } else if ($byte < 1048576) {
-            $byte = self::roundDp($byte / 1024, 2);
+            $byte = self::getRoundPow($byte / 1024, 2);
             $unit = 'KB';
         } else if ($byte < 10485760) {
-            $byte = self::roundDp($byte / 1048576, 2);
+            $byte = self::getRoundPow($byte / 1048576, 2);
             $unit = 'MB';
         } else if ($byte < 104857600) {
-            $byte = self::roundDp($byte / 1048576, 2);
+            $byte = self::getRoundPow($byte / 1048576, 2);
             $unit = 'MB';
         } else if ($byte < 1073741824) {
-            $byte = self::roundDp($byte / 1048576, 2);
+            $byte = self::getRoundPow($byte / 1048576, 2);
             $unit = 'MB';
         } else {
-            $byte = self::roundDp($byte / 1073741824, 2);
+            $byte = self::getRoundPow($byte / 1073741824, 2);
             $unit = 'GB';
         }
         $byte .= $unit;
         return $byte;
     }
     /**
-     * 辅助函数 round_up(),该函数用来取舍小数点位数的,四舍五入
+     * 辅助函数,该函数用来取舍小数点位数的,四舍五入
+     * @param int $num 大小
+     * @param int $precision 位数
      * @return mixed|int
      */
-    public static function roundDp($num, $dp)
+    public static function getRoundPow($num = 0, $precision = 2)
     {
-        $sh = pow(10, $dp);
+        $sh = pow(10, $precision);
         return (round($num * $sh) / $sh);
     }
     /**
@@ -255,16 +279,17 @@ class File
      */
     public static function getFileExt($fileName)
     {
-        return strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $result = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        return $result;
     }
     /**
      * 转换字符编码
      * @param string $string 字符串
      * @return mixed|string
      */
-    public static function convertEncoding($string)
+    public static function getConvertEncoding($string)
     {
-        //根据系统进行配置
+        // 根据系统进行配置
         $encode = stristr(PHP_OS, 'WIN') ? 'GBK' : 'UTF-8';
         $string = iconv($encode, 'UTF-8', $string);
         return $string;
