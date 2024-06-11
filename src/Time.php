@@ -8,9 +8,9 @@ use DateTime;
 
 /**
  * 时间助手类
- * @see \hulang\tool
- * @package hulang\tool
- * @mixin \hulang\tool
+ * @see \hulang\tool\Time
+ * @package hulang\tool\Time
+ * @mixin \hulang\tool\Time
  * @method static mixed|array today() 返回今日开始和结束的时间戳
  * @method static mixed|array yesterday() 返回昨日开始和结束的时间戳
  * @method static mixed|array week() 返回本周开始和结束的时间戳
