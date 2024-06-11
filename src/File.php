@@ -6,9 +6,9 @@ namespace hulang\tool;
 
 /**
  * 文件及文件夹处理类
- * @see \hulang\tool
- * @package hulang\tool
- * @mixin \hulang\tool
+ * @see \hulang\tool\File
+ * @package hulang\tool\File
+ * @mixin \hulang\tool\File
  * @method static mixed|bool mkDir($dir = '') 创建目录
  * @method static mixed|SplFileInfo getFileAttr($filename = '') 获取文件属性
  * @method static mixed|string readFile($filename = '') 读取文件内容
