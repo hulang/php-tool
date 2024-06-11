@@ -6,9 +6,9 @@ namespace hulang\tool;
 
 /**
  * 数组转树形处理类
- * @see \hulang\tool
- * @package hulang\tool
- * @mixin \hulang\tool
+ * @see \hulang\tool\Tree
+ * @package hulang\tool\Tree
+ * @mixin \hulang\tool\Tree
  * @method static mixed|array getSubTree($data, $parent = 'pid', $son = 'id', $pid = 0, $lv_name = 'lv', $lv = 0) 子孙树按等级显示
  * @method static mixed|array getSubTreeList($data, $parent = 'pid', $son = 'id', $pid = 0, $child = 'child') 子孙树列表
  * @method static mixed|array getOneMergeTree($data, $html_name = 'html', $html = '├─', $pid = 0, $lv_name = 'level', $lv = 0, $parent = 'pid', $son = 'id') 组合一维数组
