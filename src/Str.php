@@ -6,9 +6,9 @@ namespace hulang\tool;
 
 /**
  * 字符串操作类
- * @see \hulang\tool
- * @package hulang\tool
- * @mixin \hulang\tool
+ * @see \hulang\tool\Str
+ * @package hulang\tool\Str
+ * @mixin \hulang\tool\Str
  * @method static mixed|bool Contains(string $haystack, $needles) 检查字符串中是否包含某些字符串
  * @method static mixed|bool EndsWith(string $haystack, $needles) 检查字符串是否以某些字符串结尾
  * @method static mixed|bool StartsWith(string $haystack, $needles) 检查字符串是否以某些字符串开头
