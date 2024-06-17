@@ -10,7 +10,7 @@
 - php >=8.0.0
 - ext-zlib
 
-##### 数组转树形处理类、时间助手类、文件及文件夹处理类、字符串操作类、手机号码归属地、银行号归属地
+##### 数组转树形处理类、时间助手类、文件及文件夹处理类、字符串操作类、手机号码归属地、银行号归属地、ZIP压缩解压
 
 ##### 1.Tree `[数组转树形处理类]`
 ```php
@@ -44,7 +44,7 @@
  * @method static mixed|bool writeFile($filename = '', $writetext = '', $mode = LOCK_EX) 写文件
  * @method static mixed|bool delFile($filename = '') 删除文件
  * @method static mixed|bool delDir($dirName = '') 删除目录
- * @method static mixed|bool copyDir($surDir, $toDir) 复制目录
+ * @method static mixed|int copyDir($source, $toDir, $force = true) 目录拷贝,返回被拷贝的文件数
  * @method static mixed|array getFolder($path = '') 得到指定目录里的信息
  * @method static mixed|int getDirSize($dir) 统计文件夹大小
  * @method static mixed|int emptyDir($dir) 检测是否为空文件夹
@@ -138,6 +138,18 @@ $data = $phone->setPhone('手机号');
  */
 $bank = new \hulang\tool\Bank;
 $data = $bank->setCartId('卡号');
+```
+
+##### 7.ZipHelper `[Zip压缩和解压]`
+```php
+/**
+ * Php Zip压缩和解压
+ * @see \hulang\tool\ZipHelper
+ * @package hulang\tool\ZipHelper
+ * @mixin \hulang\tool\ZipHelper
+ * @method static mixed|string|bool|Exception compress($dir = '') 压缩|备份[目录]
+ * @method static mixed|string|bool|Exception unzip($package, $dir = '') 解压
+ */
 ```
 
 
