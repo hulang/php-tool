@@ -1,6 +1,10 @@
 
 **PHP工具类库**
 
+<p align="center"> 
+  您是第  <img src="https://profile-counter.glitch.me/github:hulang:php-tool/count.svg" />位访问者
+</p>
+
 #### 环境
 
 - php >=8.0.0
