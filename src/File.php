@@ -15,7 +15,7 @@ namespace hulang\tool;
  * @method static mixed|bool writeFile($filename = '', $writetext = '', $mode = LOCK_EX) 写文件
  * @method static mixed|bool delFile($filename = '') 删除文件
  * @method static mixed|bool delDir($dirName = '') 删除目录
- * @method static mixed|bool copyDir($surDir, $toDir) 复制目录
+ * @method static mixed|int copyDir($source, $toDir, $force = true) 目录拷贝,返回被拷贝的文件数
  * @method static mixed|array getFolder($path = '') 得到指定目录里的信息
  * @method static mixed|int getDirSize($dir) 统计文件夹大小
  * @method static mixed|int emptyDir($dir) 检测是否为空文件夹
@@ -51,13 +51,13 @@ class File
      * @param string $filename 文件名
      * @return mixed|SplFileInfo
      */
-    public static function getFileAttr($filename = '')
+    public static function getFileAttr($filename = ''): \SplFileInfo
     {
-        $content = '';
+        $obj = '';
         if (!empty($filename) && is_file($filename)) {
-            $content = new \SplFileInfo($filename);
+            $obj = new \SplFileInfo($filename);
         }
-        return $content;
+        return $obj;
     }
     /**
      * 读取文件内容
@@ -82,8 +82,8 @@ class File
     public static function writeFile($filename = '', $writetext = '', $mode = LOCK_EX)
     {
         if (!empty($filename) && !empty($writetext)) {
-            $fileArr = pathinfo($filename);
-            self::mkDir($fileArr['dirname']);
+            $obj = self::getFileAttr($filename);
+            self::mkDir($obj->getPath());
             $size = file_put_contents($filename, $writetext, $mode);
             if ($size > 0) {
                 return true;
@@ -118,50 +118,57 @@ class File
         if (!file_exists($dirName)) {
             return false;
         }
-        $dir = opendir($dirName);
-        while ($fileName = readdir($dir)) {
-            $file = $dirName . '/' . $fileName;
-            if ($fileName != '.' && $fileName != '..') {
-                if (is_dir($file)) {
-                    self::delDir($file);
-                } else {
-                    unlink($file);
-                }
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($dirName, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($iterator as $file) {
+            if ($file->isDir()) {
+                rmdir($file->getPathname());
+            } else {
+                unlink($file->getPathname());
             }
         }
-        closedir($dir);
         return rmdir($dirName);
     }
     /**
-     * 复制目录
-     * @param string $surDir 原目录
-     * @param string $toDir 目标目录
-     * @return mixed|bool
+     * 目录拷贝,返回被拷贝的文件数
+     * @param $source string 源文件,填写绝对路径
+     * @param $toDir string 目标路径,填写绝对路径
+     * @param $force bool 开启会每次强制覆盖原文件,false不进行覆盖,存在文件不做处理
+     * @return int 拷贝的文件数
      */
-    public static function copyDir($surDir, $toDir)
+    public static function copyDir($source, $toDir, $force = true)
     {
-        $surDir = rtrim($surDir, '/') . '/';
-        $toDir = rtrim($toDir, '/') . '/';
-        if (!file_exists($surDir)) {
-            return false;
-        }
-        if (!file_exists($toDir)) {
-            self::mkDir($toDir);
-        }
-        $file = opendir($surDir);
-        while ($fileName = readdir($file)) {
-            $file1 = $surDir . '/' . $fileName;
-            $file2 = $toDir . '/' . $fileName;
-            if ($fileName != '.' && $fileName != '..') {
-                if (is_dir($file1)) {
-                    self::copyDir($file1, $file2);
-                } else {
-                    copy($file1, $file2);
+        static $counter = 0;
+        $paths = array_filter(scandir($source), function ($file) {
+            return !in_array($file, ['.', '..']);
+        });
+        foreach ($paths as $path) {
+            // 要拷贝的源文件的完整路径
+            $sourceFullPath = $source . DIRECTORY_SEPARATOR . $path;
+            // 要拷贝到的文件的路径
+            $destFullPath = $toDir . DIRECTORY_SEPARATOR . $path;
+            // 拷贝的目标地址如果是不是文件夹,那么说明文件夹不存在,那么首先创建文件夹
+            if (is_dir($sourceFullPath)) {
+                if (!is_dir($destFullPath)) {
+                    mkdir($destFullPath);
+                    chmod($destFullPath, 0755);
                 }
+                // 递归copy
+                static::copyDir($sourceFullPath, $destFullPath, $force);
+                continue;
+            }
+            // 不开启强制覆盖的话如果已经存在文件了那么直接跳过,不进行处理
+            if (!$force && file_exists($destFullPath)) {
+                continue;
+            }
+            // 每次copy成功文件计数器+1
+            if (copy($sourceFullPath, $destFullPath)) {
+                $counter++;
             }
         }
-        closedir($file);
-        return true;
+        return $counter;
     }
     /**
      * 得到指定目录里的信息
