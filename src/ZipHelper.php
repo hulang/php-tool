@@ -30,7 +30,7 @@ class ZipHelper
         $zipFile = new ZipFile();
         try {
             if (!is_dir($dir)) {
-                // 创建插件目录
+                // 创建目录
                 File::mkDir($dir);
             }
             // 设置[压缩包名称]
@@ -74,7 +74,7 @@ class ZipHelper
                 throw new \Exception($e->getMessage());
             }
             if (!is_dir($dir)) {
-                // 创建插件目录
+                // 创建目录
                 File::mkDir($dir);
             }
             // 解压压缩包
