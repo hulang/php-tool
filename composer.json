@@ -1,6 +1,6 @@
 {
     "name": "hulang/php-tool",
-    "description": "php library",
+    "description": "数组转树形处理类、时间助手类、文件及文件夹处理类、字符串操作类、手机号码归属地、银行号归属地",
     "license": "Apache-2.0",
     "type": "library",
     "keywords": [
