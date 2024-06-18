@@ -123,7 +123,7 @@
  * @see \hulang\tool\PhoneHelper
  * @package hulang\tool\PhoneHelper
  * @mixin \hulang\tool\PhoneHelper
- * @method static mixed|array getData($card_number = '') 手机号码归属地
+ * @method static mixed|array getData($mobile_number = '', $separator = '') 手机号码归属地
  */
 ```
 
