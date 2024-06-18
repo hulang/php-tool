@@ -12,13 +12,13 @@
 
 ##### 数组转树形处理类、时间助手类、文件及文件夹处理类、字符串操作类、手机号码归属地、银行号归属地、ZIP压缩解压
 
-##### 1.Tree `[数组转树形处理类]`
+##### 1.TreeHelper `[数组转树形处理类]`
 ```php
 /**
  * 数组转树形处理类
- * @see \hulang\tool\Tree
- * @package hulang\tool\Tree
- * @mixin \hulang\tool\Tree
+ * @see \hulang\tool\TreeHelper
+ * @package hulang\tool\TreeHelper
+ * @mixin \hulang\tool\TreeHelper
  * @method static mixed|array getSubTree($data, $parent = 'pid', $son = 'id', $pid = 0, $lv_name = 'lv', $lv = 0) 子孙树按等级显示
  * @method static mixed|array getSubTreeList($data, $parent = 'pid', $son = 'id', $pid = 0, $child = 'child') 子孙树列表
  * @method static mixed|array getOneMergeTree($data, $html_name = 'html', $html = '├─', $pid = 0, $lv_name = 'level', $lv = 0, $parent = 'pid', $son = 'id') 组合一维数组
@@ -31,13 +31,13 @@
  */
 ```
 
-##### 2.File `[文件及文件夹处理类]`
+##### 2.FileHelper `[文件及文件夹处理类]`
 ```php
 /**
  * 文件及文件夹处理类
- * @see \hulang\tool\File
- * @package hulang\tool\File
- * @mixin \hulang\tool\File
+ * @see \hulang\tool\FileHelper
+ * @package hulang\tool\FileHelper
+ * @mixin \hulang\tool\FileHelper
  * @method static mixed|bool mkDir($dir = '') 创建目录
  * @method static mixed|SplFileInfo getFileAttr($filename = '') 获取文件属性
  * @method static mixed|string readFile($filename = '') 读取文件内容
@@ -55,13 +55,13 @@
  */
 ```
 
-##### 3.Time `[时间助手类]`
+##### 3.TimeRun `[时间助手类]`
 ```php
 /**
  * 时间助手类
- * @see \hulang\tool\Time
- * @package hulang\tool\Time
- * @mixin \hulang\tool\Time
+ * @see \hulang\tool\TimeRun
+ * @package hulang\tool\TimeRun
+ * @mixin \hulang\tool\TimeRun
  * @method static mixed|array today() 返回今日开始和结束的时间戳
  * @method static mixed|array yesterday() 返回昨日开始和结束的时间戳
  * @method static mixed|array week() 返回本周开始和结束的时间戳
@@ -84,13 +84,13 @@
  */
 ```
 
-##### 4.Str `[字符串操作类]`
+##### 4.StrHelper `[字符串操作类]`
 ```php
 /**
  * 字符串操作类
- * @see \hulang\tool\Str
- * @package hulang\tool\Str
- * @mixin \hulang\tool\Str
+ * @see \hulang\tool\StrHelper
+ * @package hulang\tool\StrHelper
+ * @mixin \hulang\tool\StrHelper
  * @method static mixed|bool Contains(string $haystack, $needles) 检查字符串中是否包含某些字符串
  * @method static mixed|bool EndsWith(string $haystack, $needles) 检查字符串是否以某些字符串结尾
  * @method static mixed|bool StartsWith(string $haystack, $needles) 检查字符串是否以某些字符串开头
