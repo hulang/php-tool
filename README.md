@@ -12,6 +12,12 @@
 
 ##### 数组转树形处理类、时间助手类、文件及文件夹处理类、字符串操作类、手机号码归属地、银行号归属地、ZIP压缩解压
 
+##### 安装
+
+```
+composer require hulang/php-tool
+```
+
 ##### 1.TreeHelper `[数组转树形处理类]`
 ```php
 /**
@@ -148,11 +154,4 @@
  * @method static mixed|string|bool|Exception compress($dir = '') 压缩|备份[目录]
  * @method static mixed|string|bool|Exception unzip($package, $dir = '') 解压
  */
-```
-
-
-##### 安装
-
-```
-composer require hulang/php-tool
 ```
