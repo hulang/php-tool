@@ -116,28 +116,26 @@
  */
 ```
 
-##### 5.Phone `[手机号码归属地]`
+##### 5.PhoneHelper `[手机号码归属地]`
 ```php
 /**
  * 手机号码归属地
- * @see \hulang\tool\Phone
- * @package hulang\tool\Phone
- * @mixin \hulang\tool\Phone
+ * @see \hulang\tool\PhoneHelper
+ * @package hulang\tool\PhoneHelper
+ * @mixin \hulang\tool\PhoneHelper
+ * @method static mixed|array getData($card_number = '') 手机号码归属地
  */
-$phone = new \hulang\tool\Phone;
-$data = $phone->setPhone('手机号');
 ```
 
-##### 6.Bank `[银行号归属地]`
+##### 6.BankHelper `[银行号归属地查询]`
 ```php
 /**
- * 银行号归属地
- * @see \hulang\tool\Bank
- * @package hulang\tool\Bank
- * @mixin \hulang\tool\Bank
+ * 银行号归属地查询
+ * @see \hulang\tool\BankHelper
+ * @package hulang\tool\BankHelper
+ * @mixin \hulang\tool\BankHelper
+ * @method static mixed|array getData($card_number = '') 银行号归属地
  */
-$bank = new \hulang\tool\Bank;
-$data = $bank->setCartId('卡号');
 ```
 
 ##### 7.ZipHelper `[Zip压缩和解压]`
