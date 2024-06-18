@@ -7,6 +7,8 @@ namespace hulang\tool;
 /**
  * 这个类专门用于判断国内的节假日,比如:某天是否为工作日/节假日
  * Class ChinaHoliday
+ * @url https://github.com/zjkal/time-helper/releases
+ * @version 1.1.8
  * @package zjkal
  */
 class ChinaHoliday
@@ -31,7 +33,7 @@ class ChinaHoliday
     /**
      * 是否为国内的工作日
      * @param string|int $datetime 任意格式时间字符串或时间戳(默认为当前时间)
-     * @return mixed|bool 是返回True,否则返回False
+     * @return bool 是返回True,否则返回False
      */
     public static function isWorkday($datetime = null): bool
     {
@@ -47,7 +49,7 @@ class ChinaHoliday
     /**
      * 是否为国内的节假日
      * @param string|int $datetime 任意格式时间字符串或时间戳(默认为当前时间)
-     * @return mixed|bool 是返回True,否则返回False
+     * @return bool 是返回True,否则返回False
      */
     public static function isHoliday($datetime = null): bool
     {
