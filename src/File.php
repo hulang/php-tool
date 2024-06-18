@@ -82,8 +82,8 @@ class File
     public static function writeFile($filename = '', $writetext = '', $mode = LOCK_EX)
     {
         if (!empty($filename) && !empty($writetext)) {
-            $obj = self::getFileAttr($filename);
-            self::mkDir($obj->getPath());
+            $fileArr = pathinfo($filename);
+            self::mkDir($fileArr['dirname']);
             $size = file_put_contents($filename, $writetext, $mode);
             if ($size > 0) {
                 return true;
