@@ -80,10 +80,13 @@ class Phone
         $address = join($separator, [$this->province, $this->city, $this->sp]);
 
         $this->tel_address_list = [
+            'phone' => $phone,
             'address' => $address,
             'province' => $this->province,
             'city' => $this->city,
-            'sp' => $this->sp
+            'sp' => $this->sp,
+            'post_code' => $this->post_code,
+            'area_code' => $this->tel_prefix,
         ];
         return $this;
     }
