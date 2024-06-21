@@ -15,7 +15,7 @@ class BankHelper
 {
     /**
      * 银行号归属地
-     * @param string $card_number 卡号
+     * @param string $card_number 银行卡号
      * @return mixed|array
      */
     public static function getData($card_number = '')
@@ -23,7 +23,9 @@ class BankHelper
         $result = [];
         if (!empty($card_number)) {
             $obj = new Bank;
-            $result = $obj->setCartId($card_number);
+            $obj->setCartId($card_number);
+            $dt = $obj->getBankCardInfo();
+            $result = $dt;
         }
         return $result;
     }
