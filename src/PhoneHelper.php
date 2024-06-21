@@ -15,7 +15,7 @@ class PhoneHelper
 {
     /**
      * 手机号码归属地
-     * @param string $mobile_number 卡号
+     * @param string $mobile_number 手机号码
      * @param string $separator 分隔符
      * @return mixed|array
      */
@@ -24,7 +24,12 @@ class PhoneHelper
         $result = [];
         if (!empty($mobile_number)) {
             $obj = new Phone;
-            $result = $obj->setPhone($mobile_number, $separator);
+            $obj->setPhone($mobile_number, $separator);
+            $dt = $obj->getRegion();
+            if ($dt['province'] == $dt['city']) {
+                $dt['address'] = join($separator, [$dt['province'], $dt['sp']]);
+            }
+            $result = $dt;
         }
         return $result;
     }
