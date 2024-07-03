@@ -31,7 +31,7 @@ class ZipHelper
         try {
             if (!is_dir($dir)) {
                 // 创建目录
-                File::mkDir($dir);
+                FileHelper::mkDir($dir);
             }
             // 设置[压缩包名称]
             $file = $dir . '-backup-' . date('YmdHis') . '.zip';
@@ -47,6 +47,7 @@ class ZipHelper
         }
         return $result;
     }
+
     /**
      * 解压
      *
@@ -75,7 +76,7 @@ class ZipHelper
             }
             if (!is_dir($dir)) {
                 // 创建目录
-                File::mkDir($dir);
+                FileHelper::mkDir($dir);
             }
             // 解压压缩包
             try {

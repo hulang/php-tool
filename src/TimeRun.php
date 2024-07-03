@@ -48,6 +48,7 @@ class TimeRun extends TimeHelper
         $end = mktime(23, 59, 59, $m, $d, $y);
         return [$begin, $end];
     }
+
     /**
      * 返回昨日开始和结束的时间戳
      *
@@ -60,6 +61,7 @@ class TimeRun extends TimeHelper
         $end = mktime(23, 59, 59, intval(date('m')), $yesterday, intval(date('Y')));
         return [$begin, $end];
     }
+
     /**
      * 返回本周开始和结束的时间戳
      *
@@ -80,6 +82,7 @@ class TimeRun extends TimeHelper
         $end = mktime(23, 59, 59, $m, $d - $w + 7, $y);
         return [$begin, $end];
     }
+
     /**
      * 返回上周开始和结束的时间戳
      *
@@ -92,6 +95,7 @@ class TimeRun extends TimeHelper
         $end = strtotime(date('Y-m-d', strtotime("last week Sunday", $timestamp))) + 24 * 3600 - 1;
         return [$begin, $end];
     }
+
     /**
      * 返回本月开始和结束的时间戳
      *
@@ -107,6 +111,7 @@ class TimeRun extends TimeHelper
         $end = mktime(23, 59, 59, $m, $t, $y);
         return [$begin, $end];
     }
+
     /**
      * 返回上个月开始和结束的时间戳
      *
@@ -120,6 +125,7 @@ class TimeRun extends TimeHelper
         $end = mktime(23, 59, 59, $m - 1, intval(date('t', $begin)), $y);
         return [$begin, $end];
     }
+
     /**
      * 返回今年开始和结束的时间戳
      *
@@ -132,6 +138,7 @@ class TimeRun extends TimeHelper
         $end = mktime(23, 59, 59, 12, 31, $y);
         return [$begin, $end];
     }
+
     /**
      * 返回去年开始和结束的时间戳
      *
@@ -144,6 +151,7 @@ class TimeRun extends TimeHelper
         $end = mktime(23, 59, 59, 12, 31, $year);
         return [$begin, $end];
     }
+
     /**
      * 获取几天前零点到现在/昨日结束的时间戳
      *
@@ -160,6 +168,7 @@ class TimeRun extends TimeHelper
         $begin = mktime(0, 0, 0, intval(date('m')), date('d') - $day, intval(date('Y')));
         return [$begin, $end];
     }
+
     /**
      * 返回几天前的时间戳
      *
@@ -171,6 +180,7 @@ class TimeRun extends TimeHelper
         $nowTime = time();
         return $nowTime - self::daysToSecond($day);
     }
+
     /**
      * 返回几天后的时间戳
      *
@@ -182,6 +192,7 @@ class TimeRun extends TimeHelper
         $nowTime = time();
         return $nowTime + self::daysToSecond($day);
     }
+
     /**
      * 返回几天后的开始和结束的时间戳
      *
@@ -197,6 +208,7 @@ class TimeRun extends TimeHelper
         $arr = [$start, $end];
         return $arr;
     }
+
     /**
      * 天数转换成秒数
      *
@@ -207,6 +219,7 @@ class TimeRun extends TimeHelper
     {
         return $day * 86400;
     }
+
     /**
      * 周数转换成秒数
      *
@@ -298,6 +311,7 @@ class TimeRun extends TimeHelper
         }
         return $result;
     }
+
     /**
      * 根据|时间字符串或时间戳|返回传递的开始时间和结束时间
      * @param string $datetime 任意格式时间字符串或时间戳
@@ -310,6 +324,7 @@ class TimeRun extends TimeHelper
         $end = strtotime(date('Y-m-d 23:59:59', $timestamp));
         return [$start, $end];
     }
+
     /**
      * 获取两个日期之间的所有日期
      * @param string $start 开始时间|任意格式时间字符串或时间戳

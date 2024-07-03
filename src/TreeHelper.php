@@ -44,6 +44,7 @@ class TreeHelper
         }
         return $tmp;
     }
+
     /** 子孙树列表
      * @param array $data 数据
      * @param string $parent 父级元素的名称 如:pid
@@ -70,6 +71,7 @@ class TreeHelper
         }
         return $tmp;
     }
+
     /** 组合一维数组
      * @param array $data 数据
      * @param string $html_name 层级标签名称
@@ -96,6 +98,7 @@ class TreeHelper
         }
         return $arr;
     }
+
     /** 组合多维数组
      * @param array $data 数据
      * @param string $parent 父级元素的名称 如:pid
@@ -122,6 +125,7 @@ class TreeHelper
         }
         return $arr;
     }
+
     /** 合并成父子树
      * @param array $data 数据
      * @param string $parent 父级元素的名称 如:pid
@@ -176,6 +180,7 @@ class TreeHelper
         }
         return $tmp;
     }
+
     /** 传递子分类的id返回所有的父级分类数据
      * @param array $data 数据
      * @param int $id 子级元素id值
@@ -196,6 +201,7 @@ class TreeHelper
         }
         return $arr;
     }
+
     /** 传递子分类的id返回所有的父级分类ID
      * @param array $data 数据
      * @param int $id 子级元素id值
@@ -216,6 +222,7 @@ class TreeHelper
         }
         return $arr;
     }
+
     /** 传递父级id返回所有子级id
      * @param array $data 数据
      * @param int $pid 父级元素id值
@@ -236,6 +243,7 @@ class TreeHelper
         }
         return $arr;
     }
+
     /** 传递父级id返回所有子级分类数据
      * @param array $data 数据
      * @param int $pid 父级元素id值

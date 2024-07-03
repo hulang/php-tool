@@ -46,6 +46,7 @@ class FileHelper
         }
         return $result;
     }
+
     /**
      * 获取文件属性
      * @param string $filename 文件名
@@ -59,6 +60,7 @@ class FileHelper
         }
         return $obj;
     }
+
     /**
      * 读取文件内容
      * @param string $filename 文件名
@@ -72,6 +74,7 @@ class FileHelper
         }
         return $content;
     }
+
     /**
      * 写文件
      * @param string $filename 文件名
@@ -94,6 +97,7 @@ class FileHelper
             return false;
         }
     }
+
     /**
      * 删除文件
      * @param string $filename 文件名
@@ -108,6 +112,7 @@ class FileHelper
             return false;
         }
     }
+
     /**
      * 删除目录
      * @param string $dirName 原目录
@@ -131,6 +136,7 @@ class FileHelper
         }
         return rmdir($dirName);
     }
+
     /**
      * 目录拷贝,返回被拷贝的文件数
      * @param $source string 源文件,填写绝对路径
@@ -170,6 +176,7 @@ class FileHelper
         }
         return $counter;
     }
+
     /**
      * 得到指定目录里的信息
      * @param string $path 原目录
@@ -218,6 +225,7 @@ class FileHelper
         $list == 1 ? sort($list) : rsort($list);
         return $list;
     }
+
     /**
      * 统计文件夹大小
      * @param string $dir 目录名
@@ -239,6 +247,7 @@ class FileHelper
         }
         return $size;
     }
+
     /**
      * 检测是否为空文件夹
      * @param string $dir 目录名
@@ -249,6 +258,7 @@ class FileHelper
         $result = ($files = @scandir($dir)) && count($files) <= 2;
         return $result;
     }
+
     /**
      * 文件大小格式
      * @param int $byte 大小
@@ -284,6 +294,7 @@ class FileHelper
         $byte .= $unit;
         return $byte;
     }
+
     /**
      * 辅助函数,该函数用来取舍小数点位数的,四舍五入
      * @param int $num 大小
@@ -293,8 +304,10 @@ class FileHelper
     public static function getRoundPow($num = 0, $precision = 2)
     {
         $sh = pow(10, $precision);
-        return (round($num * $sh) / $sh);
+        $result = (round($num * $sh) / $sh);
+        return $result;
     }
+
     /**
      * 获取文件扩展名
      * @param string $fileName 文件名
@@ -305,6 +318,7 @@ class FileHelper
         $result = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         return $result;
     }
+
     /**
      * 转换字符编码
      * @param string $string 字符串
@@ -314,7 +328,7 @@ class FileHelper
     {
         // 根据系统进行配置
         $encode = stristr(PHP_OS, 'WIN') ? 'GBK' : 'UTF-8';
-        $string = iconv($encode, 'UTF-8', $string);
-        return $string;
+        $result = iconv($encode, 'UTF-8', $string);
+        return $result;
     }
 }
