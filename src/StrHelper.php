@@ -201,11 +201,9 @@ class StrHelper
     public static function Snake(string $value, string $delimiter = '_')
     {
         $key = $value;
-
         if (isset(static::$snakeCache[$key][$delimiter])) {
             return static::$snakeCache[$key][$delimiter];
         }
-
         if (!ctype_lower($value)) {
             $value = preg_replace('/\s+/u', '', ucwords($value));
 
