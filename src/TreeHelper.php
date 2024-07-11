@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace hulang\tool;
 
 /**
- * 数组转树形处理类
+ * 数组转树形助手类
  * @see \hulang\tool\TreeHelper
  * @package hulang\tool\TreeHelper
  * @mixin \hulang\tool\TreeHelper
