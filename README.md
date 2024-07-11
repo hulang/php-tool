@@ -68,6 +68,8 @@ composer require hulang/php-tool
  * @see \hulang\tool\TimeRun
  * @package hulang\tool\TimeRun
  * @mixin \hulang\tool\TimeRun
+ * @method static mixed|array daysAgo($day = 1) 返回几天前的时间戳
+ * @method static mixed|array daysAfter($day = 1) 返回几天后的时间戳
  * @method static mixed|array today() 返回今日开始和结束的时间戳
  * @method static mixed|array yesterday() 返回昨日开始和结束的时间戳
  * @method static mixed|array week() 返回本周开始和结束的时间戳
@@ -77,8 +79,6 @@ composer require hulang/php-tool
  * @method static mixed|array year() 返回今年开始和结束的时间戳
  * @method static mixed|array lastYear() 返回去年开始和结束的时间戳
  * @method static mixed|array dayToNow($day = 1, $now = 1) 获取几天前零点到现在/昨日结束的时间戳
- * @method static mixed|array daysAgo($day = 1) 返回几天前的时间戳
- * @method static mixed|array daysAfter($day = 1) 返回几天后的时间戳
  * @method static mixed|array getDaysAfterTimeStamp($day = 1) 返回几天后的开始和结束的时间戳
  * @method static mixed|int daysToSecond($day = 1) 天数转换成秒数
  * @method static mixed|int weekToSecond($week = 1) 周数转换成秒数
