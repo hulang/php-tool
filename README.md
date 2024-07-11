@@ -10,7 +10,7 @@
 - php >=8.0.0
 - ext-zlib
 
-##### 数组转树形处理类、时间助手类、文件及文件夹处理类、字符串操作类、手机号码归属地、银行号归属地、ZIP压缩解压
+##### 数组转树形助手类、时间助手类、文件及文件夹助手类、字符串助手类、手机号码归属地、银行号归属地、ZIP压缩解压
 
 ##### 安装
 
@@ -18,7 +18,7 @@
 composer require hulang/php-tool
 ```
 
-##### 1.TreeHelper `[数组转树形处理类]`
+##### 1.TreeHelper `[数组转树形助手类]`
 ```php
 /**
  * 数组转树形处理类
@@ -37,10 +37,10 @@ composer require hulang/php-tool
  */
 ```
 
-##### 2.FileHelper `[文件及文件夹处理类]`
+##### 2.FileHelper `[文件及文件夹助手类]`
 ```php
 /**
- * 文件及文件夹处理类
+ * 文件及文件夹帮助类
  * @see \hulang\tool\FileHelper
  * @package hulang\tool\FileHelper
  * @mixin \hulang\tool\FileHelper
@@ -48,10 +48,10 @@ composer require hulang/php-tool
  * @method static mixed|SplFileInfo getFileAttr($filename = '') 获取文件属性
  * @method static mixed|string readFile($filename = '') 读取文件内容
  * @method static mixed|bool writeFile($filename = '', $writetext = '', $mode = LOCK_EX) 写文件
- * @method static mixed|bool delFile($filename = '') 删除文件
- * @method static mixed|bool delDir($dirName = '') 删除目录
+ * @method static mixed|bool delFile($filename = '') 删除指定的文件
+ * @method static mixed|bool delDir($dirName = '') 删除指定的目录及其内容
  * @method static mixed|int copyDir($source, $toDir, $force = true) 目录拷贝,返回被拷贝的文件数
- * @method static mixed|array getFolder($path = '') 得到指定目录里的信息
+ * @method static mixed|array getFolder($path = '', $exclude = []) 得到指定目录里的信息
  * @method static mixed|int getDirSize($dir) 统计文件夹大小
  * @method static mixed|int emptyDir($dir) 检测是否为空文件夹
  * @method static mixed|string getFileSizeFormat($byte = 0) 文件大小格式
@@ -90,7 +90,7 @@ composer require hulang/php-tool
  */
 ```
 
-##### 4.StrHelper `[字符串操作类]`
+##### 4.StrHelper `[字符串助手类]`
 ```php
 /**
  * 字符串操作类
