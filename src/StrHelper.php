@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace hulang\tool;
 
 /**
- * 字符串操作类
+ * 字符串助手类
  * @see \hulang\tool\StrHelper
  * @package hulang\tool\StrHelper
  * @mixin \hulang\tool\StrHelper
