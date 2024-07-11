@@ -8,7 +8,7 @@ use PhpZip\Exception\ZipException;
 use PhpZip\ZipFile;
 
 /**
- * Php Zip压缩和解压
+ * Zip压缩和解压助手类
  * @see \hulang\tool\ZipHelper
  * @package hulang\tool\ZipHelper
  * @mixin \hulang\tool\ZipHelper
