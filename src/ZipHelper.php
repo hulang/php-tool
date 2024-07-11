@@ -44,10 +44,6 @@ class ZipHelper
             }
             // 构造备份文件名,包含目录名、backup标识、当前时间戳和.zip后缀
             $file = $dir . '-backup-' . date('YmdHis') . '.zip';
-            // 如果提供了自定义名称,则使用自定义名称替代默认名称
-            if (!empty($name)) {
-                $file = $name;
-            }
             // 调用ZipFile对象的方法,将指定目录递归添加到ZIP文件中,然后保存ZIP文件并关闭对象
             $zipFile->addDirRecursive($dir)->saveAsFile($file)->close();
             // 如果操作成功,修改返回数组中的状态码为1
