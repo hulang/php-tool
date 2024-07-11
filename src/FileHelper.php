@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace hulang\tool;
 
 /**
- * 文件及文件夹处理类
+ * 文件及文件夹帮助类
  * @see \hulang\tool\FileHelper
  * @package hulang\tool\FileHelper
  * @mixin \hulang\tool\FileHelper
@@ -16,7 +16,7 @@ namespace hulang\tool;
  * @method static mixed|bool delFile($filename = '') 删除指定的文件
  * @method static mixed|bool delDir($dirName = '') 删除指定的目录及其内容
  * @method static mixed|int copyDir($source, $toDir, $force = true) 目录拷贝,返回被拷贝的文件数
- * @method static mixed|array getFolder($path = '') 得到指定目录里的信息
+ * @method static mixed|array getFolder($path = '', $exclude = []) 得到指定目录里的信息
  * @method static mixed|int getDirSize($dir) 统计文件夹大小
  * @method static mixed|int emptyDir($dir) 检测是否为空文件夹
  * @method static mixed|string getFileSizeFormat($byte = 0) 文件大小格式
@@ -239,10 +239,12 @@ class FileHelper
      * 收集信息如名称、类型、大小、访问时间等,并以数组形式返回
      * 
      * @param string $path 要查询的目录路径,默认为空,表示当前目录
+     * @param array $exclude 需要排除的文件或目录名称,默认为空数组
+     *                       如果指定了排除的文件或目录,则不会返回这些文件或目录的信息
      * @return array 如果路径是有效的目录,则返回包含文件和目录信息的数组
      *               如果路径无效或不是目录,则返回 null
      */
-    public static function getFolder($path = '')
+    public static function getFolder($path = '', $exclude = [])
     {
         // 检查路径是否为有效目录
         if (!is_dir($path)) {
@@ -254,10 +256,17 @@ class FileHelper
         // 使用FilesystemIterator遍历目录,将文件名作为键
         $flag = \FilesystemIterator::KEY_AS_FILENAME;
         $glob = new \FilesystemIterator($path, $flag);
+        // 排除一些特殊文件,如'.'和'..'
+        $excludeCharacters = ['.', '..'];
+        $excludeCharacters = array_merge($excludeCharacters, $exclude);
         // 用于存储目录信息的数组
         $list = [];
         foreach ($glob as $k => $file) {
             $dir_arr = [];
+            // 排除一些特殊文件
+            if (in_array($file->getFilename(), $excludeCharacters)) {
+                continue;
+            }
             // 文件名的转换编码
             $dir_arr['name'] = self::getConvertEncoding($file->getFilename());
             // 判断文件是目录还是普通文件,并获取相应的信息
