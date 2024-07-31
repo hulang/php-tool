@@ -82,6 +82,7 @@ class TreeHelper
                     $arr = [];
                     $arr = self::getSubTreeList($data, $parent, $son, $v[$son], $child);
                     // 如果当前节点有子节点,则将子节点数和子节点列表添加到当前节点
+                    $v['count'] = 0;
                     if (!empty($arr)) {
                         $v['count'] = count($arr);
                         $v[$child] = $arr;
