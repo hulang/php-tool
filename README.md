@@ -25,7 +25,7 @@
 composer require hulang/php-tool
 ```
 
-##### 1.TreeHelper `[数组转树形助手类]`
+##### TreeHelper `数组转各种Tree`
 ```php
 /**
  * 数组转树形处理类
@@ -44,7 +44,7 @@ composer require hulang/php-tool
  */
 ```
 
-##### 2.FileHelper `[文件及文件夹助手类]`
+##### FileHelper `文件及文件夹`
 ```php
 /**
  * 文件及文件夹帮助类
@@ -68,7 +68,7 @@ composer require hulang/php-tool
  */
 ```
 
-##### 3.TimeRun `[时间助手类]`
+##### TimeRun `时间`
 ```php
 /**
  * 时间助手类
@@ -97,7 +97,7 @@ composer require hulang/php-tool
  */
 ```
 
-##### 4.StrHelper `[字符串助手类]`
+##### StrHelper `字符串`
 ```php
 /**
  * 字符串操作类
@@ -129,7 +129,7 @@ composer require hulang/php-tool
  */
 ```
 
-##### 5.PhoneHelper `[手机号码归属地]`
+##### PhoneHelper `手机号码归属地`
 ```php
 /**
  * 手机号码归属地
@@ -140,7 +140,7 @@ composer require hulang/php-tool
  */
 ```
 
-##### 6.BankHelper `[银行号归属地查询]`
+##### BankHelper `银行号归属地查询`
 ```php
 /**
  * 银行号归属地查询
@@ -151,7 +151,7 @@ composer require hulang/php-tool
  */
 ```
 
-##### 7.ZipHelper `[Zip压缩和解压助手类]`
+##### ZipHelper `Zip压缩和解压`
 ```php
 /**
  * Php Zip压缩和解压
