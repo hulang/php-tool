@@ -7,7 +7,7 @@ namespace hulang\tool;
 /**
  * 文件及文件夹帮助类
  * @see \hulang\tool\FileHelper
- * @package hulang\tool\FileHelper
+ * @package hulang\tool
  * @mixin \hulang\tool\FileHelper
  * @method static mixed|bool mkDir($dir = '') 创建目录
  * @method static mixed|SplFileInfo getFileAttr($filename = '') 获取文件属性
@@ -31,7 +31,7 @@ class FileHelper
      * 
      * 该方法用于静态方式创建一个目录
      * 如果目录已存在,方法将不进行任何操作
-     * 如果目录不存在且成功创建,则返回true；否则返回false
+     * 如果目录不存在且成功创建,则返回true;否则返回false
      * 
      * @param string $dir 目录名.默认为空字符串,表示使用方法调用时的路径
      * @return mixed|bool 方法执行结果.成功创建目录返回true,否则返回false
@@ -98,7 +98,7 @@ class FileHelper
      * @param string $filename 文件名,可以包含路径.如果文件名为空,写入操作将失败
      * @param string $writetext 要写入文件的文本内容.如果内容为空,写入操作将失败
      * @param string $mode 写入文件的模式,默认为LOCK_EX,可参考PHP文件操作模式的文档
-     * @return mixed|bool 如果写入成功,返回true；如果写入失败或参数不满足条件,返回false
+     * @return mixed|bool 如果写入成功,返回true;如果写入失败或参数不满足条件,返回false
      */
     public static function writeFile($filename = '', $writetext = '', $mode = LOCK_EX)
     {
@@ -130,7 +130,7 @@ class FileHelper
      * 删除文件是一个常见的操作,可能用于清理临时文件或当文件不再需要时
      * 
      * @param string $filename 要删除的文件的路径.如果未提供路径,则默认为空字符串
-     * @return mixed|bool 如果文件成功删除,返回true；如果文件不存在或删除失败,返回false
+     * @return mixed|bool 如果文件成功删除,返回true;如果文件不存在或删除失败,返回false
      */
     public static function delFile($filename = '')
     {
@@ -187,7 +187,7 @@ class FileHelper
      * 
      * @param string $source 源目录的绝对路径
      * @param string $toDir 目标目录的绝对路径
-     * @param bool $force 如果为true,则覆盖已存在的文件；如果为false,则不覆盖
+     * @param bool $force 如果为true,则覆盖已存在的文件;如果为false,则不覆盖
      * @return int 返回成功复制的文件数量
      */
     public static function copyDir($source, $toDir, $force = true)
@@ -262,42 +262,39 @@ class FileHelper
         // 用于存储目录信息的数组
         $list = [];
         foreach ($glob as $k => $file) {
-            $dir_arr = [];
+            $arr = [];
             // 排除一些特殊文件
             if (in_array($file->getFilename(), $excludeCharacters)) {
                 continue;
             }
-            // 文件名的转换编码
-            $dir_arr['name'] = self::getConvertEncoding($file->getFilename());
             // 判断文件是目录还是普通文件,并获取相应的信息
+            $arr['type'] = $file->getType();
             if ($file->isDir()) {
-                $dir_arr['type'] = 'dir';
-                $dir_arr['size'] = self::getFileSizeFormat(self::getDirSize($file->getPathname()));
-                $dir_arr['ext'] = '';
+                $arr['size'] = self::getFileSizeFormat(self::getDirSize($file->getPathname()));
             } else {
-                $dir_arr['type'] = 'file';
-                $dir_arr['size'] = self::getFileSizeFormat($file->getSize());
-                $dir_arr['ext'] = $file->getExtension();
+                $arr['size'] = self::getFileSizeFormat($file->getSize());
             }
+            $arr['ext'] = $file->getExtension();
+            // 文件名的转换编码
+            $arr['name'] = self::getConvertEncoding($file->getFilename());
             // 收集文件的其他信息
-            $dir_arr['path_name'] = $file->getPathname();
-            $dir_arr['atime'] = $file->getATime();
-            $dir_arr['mtime'] = $file->getMTime();
-            $dir_arr['ctime'] = $file->getCTime();
-            $dir_arr['is_readable'] = $file->isReadable();
-            $dir_arr['is_writeable'] = $file->isWritable();
-            $dir_arr['base_name'] = $file->getBasename();
-            $dir_arr['group'] = $file->getGroup();
-            $dir_arr['inode'] = $file->getInode();
-            $dir_arr['owner'] = $file->getOwner();
-            $dir_arr['path'] = $file->getPath();
-            $dir_arr['perms'] = $file->getPerms();
-            $dir_arr['tp'] = $file->getType();
-            $dir_arr['is_executable'] = $file->isExecutable();
-            $dir_arr['is_file'] = $file->isFile();
-            $dir_arr['is_link'] = $file->isLink();
+            $arr['path_name'] = $file->getPathname();
+            $arr['atime'] = $file->getATime();
+            $arr['mtime'] = $file->getMTime();
+            $arr['ctime'] = $file->getCTime();
+            $arr['is_readable'] = $file->isReadable();
+            $arr['is_writeable'] = $file->isWritable();
+            $arr['base_name'] = $file->getBasename();
+            $arr['group'] = $file->getGroup();
+            $arr['inode'] = $file->getInode();
+            $arr['owner'] = $file->getOwner();
+            $arr['path'] = $file->getPath();
+            $arr['perms'] = $file->getPerms();
+            $arr['is_executable'] = $file->isExecutable();
+            $arr['is_file'] = $file->isFile();
+            $arr['is_link'] = $file->isLink();
             // 将文件或目录信息添加到结果数组
-            $list[$k] = $dir_arr;
+            $list[$k] = $arr;
         }
         // 根据文件大小对结果进行排序,如果只有一个元素则按名称排序
         $list == 1 ? sort($list) : rsort($list);
@@ -345,7 +342,7 @@ class FileHelper
      * 如果目录包含除.和..之外的任何其他文件或子目录,则被认为是非空的
      * 
      * @param string $dir 需要检查的目录路径
-     * @return bool 如果目录为空或只包含.和..,则返回true；否则返回false
+     * @return bool 如果目录为空或只包含.和..,则返回true;否则返回false
      */
     public static function emptyDir($dir)
     {
