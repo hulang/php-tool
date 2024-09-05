@@ -97,7 +97,7 @@ class FileHelper
      * 
      * @param string $filename 文件名,可以包含路径.如果文件名为空,写入操作将失败
      * @param string $writetext 要写入文件的文本内容.如果内容为空,写入操作将失败
-     * @param string $mode 写入文件的模式,默认为LOCK_EX,可参考PHP文件操作模式的文档
+     * @param mixed|string|int $mode 写入文件的模式,默认为LOCK_EX,可参考PHP文件操作模式的文档
      * @return mixed|bool 如果写入成功,返回true;如果写入失败或参数不满足条件,返回false
      */
     public static function writeFile($filename = '', $writetext = '', $mode = LOCK_EX)
@@ -293,6 +293,7 @@ class FileHelper
             $arr['is_executable'] = $file->isExecutable();
             $arr['is_file'] = $file->isFile();
             $arr['is_link'] = $file->isLink();
+            $arr['SplFileInfo'] = new \SplFileInfo($file->getFilename());
             // 将文件或目录信息添加到结果数组
             $list[$k] = $arr;
         }
