@@ -349,7 +349,8 @@ class FileHelper
     {
         // 使用scandir函数扫描目录,并检查结果是否仅包含默认的两个项
         $files = scandir($dir);
-        return count($files) == 2;
+        $result = count($files) == 2;
+        return $result;
     }
 
     /**
