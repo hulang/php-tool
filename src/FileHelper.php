@@ -9,8 +9,8 @@ namespace hulang\tool;
  * @see \hulang\tool\FileHelper
  * @package hulang\tool
  * @mixin \hulang\tool\FileHelper
- * @method static mixed|bool mkDir($dir = '') 创建目录
  * @method static mixed|SplFileInfo getFileAttr($filename = '') 获取文件属性
+ * @method static mixed|bool mkDir($dir = '') 创建目录
  * @method static mixed|string readFile($filename = '') 读取文件内容
  * @method static mixed|bool writeFile($filename = '', $writetext = '', $mode = LOCK_EX) 写文件
  * @method static mixed|bool delFile($filename = '') 删除指定的文件
@@ -26,6 +26,26 @@ namespace hulang\tool;
  */
 class FileHelper
 {
+    /**
+     * 获取文件属性
+     * 
+     * 本方法用于获取指定文件的属性信息
+     * 如果文件存在且非空,则返回一个包含文件信息的对象
+     * 如果文件不存在或为空字符串,则返回空对象
+     * 
+     * @param string $filename 文件名,可以为空.如果为空,则方法不会尝试获取文件信息
+     * @return mixed|\SplFileInfo 返回一个包含文件信息的对象,如果文件不存在或参数为空,则返回空对象
+     */
+    public static function getFileAttr($filename = ''): \SplFileInfo
+    {
+        $obj = '';
+        // 当文件名不为空且指定的文件存在时,创建一个\SplFileInfo对象来获取文件信息
+        if (!empty($filename) && is_file($filename)) {
+            $obj = new \SplFileInfo($filename);
+        }
+        return $obj;
+    }
+
     /**
      * 创建目录
      * 
@@ -47,26 +67,6 @@ class FileHelper
             }
         }
         return $result;
-    }
-
-    /**
-     * 获取文件属性
-     * 
-     * 本方法用于获取指定文件的属性信息
-     * 如果文件存在且非空,则返回一个包含文件信息的对象
-     * 如果文件不存在或为空字符串,则返回空对象
-     * 
-     * @param string $filename 文件名,可以为空.如果为空,则方法不会尝试获取文件信息
-     * @return mixed|\SplFileInfo 返回一个包含文件信息的对象,如果文件不存在或参数为空,则返回空对象
-     */
-    public static function getFileAttr($filename = ''): \SplFileInfo
-    {
-        $obj = '';
-        // 当文件名不为空且指定的文件存在时,创建一个\SplFileInfo对象来获取文件信息
-        if (!empty($filename) && is_file($filename)) {
-            $obj = new \SplFileInfo($filename);
-        }
-        return $obj;
     }
 
     /**
