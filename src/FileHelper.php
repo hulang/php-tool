@@ -10,6 +10,8 @@ namespace hulang\tool;
  * @package hulang\tool
  * @mixin \hulang\tool\FileHelper
  * @method static mixed|SplFileInfo getFileAttr($filename = '') 获取文件属性
+ * @method static mixed|string getFileMd5($filename = '') 计算文件的MD5值
+ * @method static mixed|string getFileSha1($filename = '') 计算文件的 SHA-1 哈希值
  * @method static mixed|bool mkDir($dir = '') 创建目录
  * @method static mixed|string readFile($filename = '') 读取文件内容
  * @method static mixed|bool writeFile($filename = '', $writetext = '', $mode = LOCK_EX) 写文件
@@ -44,6 +46,46 @@ class FileHelper
             $obj = new \SplFileInfo($filename);
         }
         return $obj;
+    }
+
+    /**
+     * 计算文件的MD5值
+     * 
+     * 此函数用于计算给定文件的MD5值,MD5是一种散列算法,可以生成一个唯一的128位(16字节)散列值
+     * 通常用于检查文件的完整性
+     * 
+     * @param string $filename 要计算MD5值的文件路径如果文件路径为空或不是有效文件,则返回空字符串
+     * @return string 文件的MD5值如果文件不存在或参数不正确,则返回空字符串
+     */
+    public static function getFileMd5($filename = '')
+    {
+        $result = '';
+        // 检查文件路径是否非空且为有效文件
+        if (!empty($filename) && is_file($filename)) {
+            // 使用md5_file函数直接获取文件的MD5值
+            $result = md5_file($filename);
+        }
+        // 返回文件的MD5值或空字符串
+        return $result;
+    }
+
+    /**
+     * 计算文件的 SHA-1 哈希值
+     * 
+     * 此方法用于计算给定文件的 SHA-1 哈希值
+     * 它首先检查文件是否存在,然后使用 PHP 的内置函数 sha1_file 来计算哈希值
+     * 
+     * @param string $filename 要计算哈希值的文件路径.如果文件名为空或不是有效文件,则返回空字符串
+     * @return string 文件的 SHA-1 哈希值字符串.如果文件不存在或 $filename 参数无效,则返回空字符串
+     */
+    public static function getFileSha1($filename = '')
+    {
+        $result = '';
+        // 检查文件是否存在且不为空
+        if (!empty($filename) && is_file($filename)) {
+            $result = sha1_file($filename);
+        }
+        return $result;
     }
 
     /**
