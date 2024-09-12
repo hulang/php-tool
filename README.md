@@ -49,10 +49,12 @@ composer require hulang/php-tool
 /**
  * 文件及文件夹帮助类
  * @see \hulang\tool\FileHelper
- * @package hulang\tool\FileHelper
+ * @package hulang\tool
  * @mixin \hulang\tool\FileHelper
- * @method static mixed|bool mkDir($dir = '') 创建目录
  * @method static mixed|SplFileInfo getFileAttr($filename = '') 获取文件属性
+ * @method static mixed|string getFileMd5($filename = '') 计算文件的MD5值
+ * @method static mixed|string getFileSha1($filename = '') 计算文件的 SHA-1 哈希值
+ * @method static mixed|bool mkDir($dir = '') 创建目录
  * @method static mixed|string readFile($filename = '') 读取文件内容
  * @method static mixed|bool writeFile($filename = '', $writetext = '', $mode = LOCK_EX) 写文件
  * @method static mixed|bool delFile($filename = '') 删除指定的文件
