@@ -257,7 +257,7 @@ class TimeRun extends TimeHelper
      * 
      * @param int $day 指定的天数,默认为1,表示计算从昨天开始到现在的時間范围
      * @param int $now 控制返回的时间范围,1表示返回从昨天开始到现在的時間范围,其他值表示返回过去$day天的整天范围
-     * @return mixed|array 如果$now为1,返回一个包含开始和结束时间戳的数组；否则,仅返回开始时间戳
+     * @return mixed|array 如果$now为1,返回一个包含开始和结束时间戳的数组;否则,仅返回开始时间戳
      */
     public static function dayToNow($day = 1, $now = 1)
     {
@@ -297,7 +297,7 @@ class TimeRun extends TimeHelper
      * 这对于需要对日期进行运算,比如预订系统中计算出预订到期时间等场景非常有用
      * 
      * @param int $day 天数,表示要计算的天数,默认为1天
-     *                 可以是正数,表示未来的时间；也可以是负数,表示过去的时间
+     *                 可以是正数,表示未来的时间;也可以是负数,表示过去的时间
      * @return mixed|int 返回计算得到的时间戳.
      *                   如果输入的$day参数非法(不是整数),则可能返回错误类型
      */
