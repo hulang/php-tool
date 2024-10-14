@@ -10,16 +10,16 @@ use Exception;
 use InvalidArgumentException;
 
 /**
- * 最方便的PHP时间助手类, 所有方法都可以传入任意类型的时间日期格式或者时间戳
+ * 最方便的PHP时间助手类,所有方法都可以传入任意类型的时间日期格式或者时间戳
  * Class TimeHelper
  * @url https://github.com/zjkal/time-helper/releases
- * @version 1.1.8
+ * @version 1.1.9
  * @package zjkal
  */
 class TimeHelper
 {
     // 常见的特殊日期格式
-    private static $date_formats = ['Y-m-d', 'm/d/Y', 'd.m.Y', 'm.d.y', 'd/m/Y', 'Y年m月d日', 'Y年m月', 'Y年m月d号', 'Y/m/d', 'Y.m.d', 'Y.m', 'F d, Y', 'M d, Y', 'F j, Y', 'M j, Y', 'F jS, Y', 'M jS, Y'];
+    private static $date_formats = ['Y-m-d', 'm/d/Y', 'd.m.Y', 'm.d.y', 'd/m/Y', 'Y年m月d日', 'Y年m月', 'Y年m月d号', 'Y/m/d', 'Y.m.d', 'Y.m', 'F d,Y', 'M d,Y', 'F j,Y', 'M j,Y', 'F jS,Y', 'M jS,Y'];
     // 常见的特殊时间格式
     private static $time_formats = ['H', 'H:i', 'H:i:s', 'H点', 'H点i分', 'H点i分s秒', 'H时', 'H时i分', 'H时i分s秒', 'g:i a', 'h:i a'];
 
@@ -42,7 +42,9 @@ class TimeHelper
 
     /**
      * 将任意时间类型的参数转为时间戳
-     * 请注意 m/d/y 或 d-m-y 格式的日期，如果分隔符是斜线（/），则使用美洲的 m/d/y 格式。如果分隔符是横杠（-）或者点（.），则使用欧洲的 d-m-y 格式。为了避免潜在的错误，您应该尽可能使用 YYYY-MM-DD 格式或者使用 date_create_from_format() 函数。
+     * 请注意 m/d/y 或 d-m-y 格式的日期,如果分隔符是斜线(/),则使用美洲的 m/d/y 格式
+     * 如果分隔符是横杠(-)或者点(.),则使用欧洲的 d-m-y 格式
+     * 为了避免潜在的错误,您应该尽可能使用 YYYY-MM-DD 格式或者使用 date_create_from_format() 函数
      * @param int|string $datetime 要转换为时间戳的字符串或数字,如果为空则返回当前时间戳
      * @return int 时间戳
      */
@@ -54,7 +56,7 @@ class TimeHelper
 
         $start = strtotime('1970-01-01 00:00:00');
         $end = strtotime('2099-12-31 23:59:59');
-        //判断是否为时间戳
+        // 判断是否为时间戳
         if (is_numeric($datetime) && $datetime <= $end && $datetime >= $start) {
             return intval($datetime);
         } else {
@@ -65,7 +67,7 @@ class TimeHelper
                 /* 尝试处理特殊的日期格式 */
                 [$date, $time] = explode(' ', $datetime);
                 if ($date) {
-                    //获取时间的格式
+                    // 获取时间的格式
                     $time_format_str = '';
                     if ($time) {
                         foreach (self::$time_formats as $time_format) {
@@ -76,10 +78,10 @@ class TimeHelper
                         }
                     }
                     foreach (self::$date_formats as $date_format) {
-                        //获取日期的格式
+                        // 获取日期的格式
                         if (date_create_from_format($date_format, $date) !== false) {
                             $datetime_format = ($time_format_str) ? "$date_format $time_format_str" : $date_format;
-                            //获取日期时间对象
+                            // 获取日期时间对象
                             $datetime_obj = date_create_from_format($datetime_format, $datetime);
                             if ($datetime_obj !== false) {
                                 return strtotime($datetime_obj->format('Y-m-d' . ($time_format_str ? ' H:i:s' : '')));
@@ -94,7 +96,7 @@ class TimeHelper
 
     /**
      * 将任意格式的时间转换为指定格式
-     * @param string $format 格式化字符串
+     * @param string $format 格式化字符串(默认为:Y-m-d H:i:s)
      * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return false|string 格式化后的时间字符串
      */
@@ -299,11 +301,23 @@ class TimeHelper
         return in_array(self::getWeekDay($datetime), [6, 7]);
     }
 
-    //获得两个日期得差量对象
+    /**
+     * 计算两个日期时间之间的差异
+     *
+     * 该方法将两个日期时间字符串转换为统一的格式,然后计算它们之间的差异返回一个DateInterval对象
+     * 如果只提供一个日期时间,则计算该日期时间与当前日期时间之间的差异
+     *
+     * @param string $datetime 第一个日期时间字符串,表示原始的日期时间
+     * @param string|null $new_datetime 第二个日期时间字符串,表示新的日期时间如果未提供,则使用当前日期时间
+     * @return \DateInterval 返回一个DateInterval对象,表示两个日期时间之间的差异
+     */
     private static function getDateDiff($datetime, $new_datetime = null): \DateInterval
     {
+        // 将第一个日期时间字符串格式化为'Y-m-d H:i:s'格式
         $datetime = self::format('Y-m-d H:i:s', $datetime);
+        // 将第二个日期时间字符串格式化为'Y-m-d H:i:s'格式如果未提供,则使用当前日期时间
         $new_datetime = self::format('Y-m-d H:i:s', $new_datetime);
+        // 使用date_create函数创建两个日期时间对象,并使用date_diff函数计算它们之间的差异然后返回这个差异
         return date_diff(date_create($datetime), date_create($new_datetime));
     }
 
@@ -315,19 +329,26 @@ class TimeHelper
      */
     public static function diffSeconds($datetime, $new_datetime = null): int
     {
+        // 将传入的日期时间转换为时间戳
         $timestamp = self::toTimestamp($datetime);
+        // 将传入的新日期时间转换为时间戳,如果未传入则默认为当前时间
         $new_timestamp = self::toTimestamp($new_datetime);
+        // 返回两个时间戳的差值的绝对值,即两个日期相差的秒数
         return abs($new_timestamp - $timestamp);
     }
 
     /**
      * 返回两个日期相差分钟数(如果之传入一个日期,则与当前时间比较)
-     * @param $datetime
-     * @param $new_datetime
-     * @return int
+     * 如果只提供一个日期时间,则将其与当前时间进行比较
+     * 
+     * @param string|\DateTime $datetime 第一个日期时间,可以是字符串或\DateTime对象
+     * @param string|\DateTime|null $new_datetime 第二个日期时间,可以是字符串或\DateTime对象,如果为null,则使用当前时间
+     * @return int 两个日期时间之间的分钟差
      */
     public static function diffMinutes($datetime, $new_datetime = null): int
     {
+        // 调用diffSeconds方法计算秒差,然后除以60转换为分钟差
+        // 使用intval确保结果为整数
         return intval(self::diffSeconds($datetime, $new_datetime) / 60);
     }
 
@@ -339,6 +360,7 @@ class TimeHelper
      */
     public static function diffHours($datetime, $new_datetime = null): int
     {
+        // 调用diffSeconds方法获取两个日期相差的秒数,然后除以3600转换为小时数,并取整
         return intval(self::diffSeconds($datetime, $new_datetime) / 3600);
     }
 
@@ -659,17 +681,27 @@ class TimeHelper
     }
 
     /**
+     * 获取当前时间
+     * @param string $format 格式化字符串(默认为:Y-m-d H:i:s)
+     * @return string
+     */
+    public static function now(string $format = 'Y-m-d H:i:s'): string
+    {
+        return date($format);
+    }
+
+    /**
      * 后续开发计划:
-     * TODO: 返回当前是第几年, getYear(),返回4位数年份.
-     * TODO: 返回当前是第几个季度, getQuarter(),返回1234.
-     * TODO: 返回当前是第几个月, getMonth(),返回1-12.
-     * TODO: 返回当前是第几周, getWeek(),返回1-53.
-     * TODO: 返回当前是第几天, getDay(),返回1-31.
-     * TODO: 返回当前是第几小时, getHour(),返回0-23.
-     * TODO: 返回当前是第几分钟, getMinute(),返回0-59.
-     * TODO: 返回当前是第几秒, getSecond(),返回0-59.
+     * TODO: 返回当前是第几年,getYear(),返回4位数年份.
+     * TODO: 返回当前是第几个季度,getQuarter(),返回1234.
+     * TODO: 返回当前是第几个月,getMonth(),返回1-12.
+     * TODO: 返回当前是第几周,getWeek(),返回1-53.
+     * TODO: 返回当前是第几天,getDay(),返回1-31.
+     * TODO: 返回当前是第几小时,getHour(),返回0-23.
+     * TODO: 返回当前是第几分钟,getMinute(),返回0-59.
+     * TODO: 返回当前是第几秒,getSecond(),返回0-59.
      * TODO: 为beforeWeek和afterWeek增加取整方法
      * TODO: 修改before和after相关方法,使取整不仅可以向前,还可以向后,如afterMonth可以返回该月最后一天的23点59分59秒的时间戳
-     * TODO: 返回日期范围,主要用于SQL查询, 比如今天,昨天,最近7天, 本月, 本周等等. 为了方便使用, 会另外再起一个类
+     * TODO: 返回日期范围,主要用于SQL查询,比如今天,昨天,最近7天,本月,本周等等. 为了方便使用,会另外再起一个类
      */
 }
