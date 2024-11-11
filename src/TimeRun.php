@@ -492,6 +492,42 @@ class TimeRun extends TimeHelper
             // 将开始日期推进一天
             $dt_start = strtotime('+1 day', $dt_start);
         }
-        return $list; // 返回包含所有日期的数组
+        // 返回包含所有日期的数组
+        return $list;
+    }
+
+    /**
+     * 获取指定年份和月份的起始和结束时间戳
+     * 如果未指定年份和月份,则默认为当前年份和月份
+     * 
+     * @param int $y 年份,默认为0,表示当前年份
+     * @param int $m 月份,默认为0,表示当前月份
+     * @return mixed|array 包含指定月份起始和结束时间戳的数组
+     */
+    public static function getYearMonthStamp($y = 0, $m = 0)
+    {
+        // 如果未指定年份,则使用当前年份
+        if ($y == 0) {
+            $y = date('Y');
+        }
+        // 如果未指定月份,则使用当前月份
+        if ($m == 0) {
+            $m = date('m');
+        }
+        // 将月份格式化为两位数,例如1月变为01
+        $m = sprintf('%02d', intval($m));
+        // 将年份格式化为四位数,例如22变为0022
+        $y = str_pad((string) intval($y), 4, '0', STR_PAD_RIGHT);
+        // 检查月份是否在1到12的范围内,如果不在,则默认为1月
+        if ($m > 12 || $m < 1) {
+            $m = 1;
+        }
+        // 构造指定月份的第一天的日期字符串
+        $firstday = strtotime($y . $m . '01000000');
+        $firstdaystr = date('Y-m-01', $firstday);
+        // 计算指定月份的最后一天的日期字符串
+        $lastday = strtotime(date('Y-m-d 23:59:59', strtotime($firstdaystr . ' +1 month -1 day')));
+        // 返回指定月份的起始和结束时间戳
+        return [$firstday, $lastday];
     }
 }
