@@ -30,6 +30,7 @@ use DateTime;
  * @method static mixed|int getAfterDay(int $day = 1, $datetime = null, bool $is_day = false, bool $round = false) 返回N天后的时间戳,传入第二个参数,则从该时间开始计算
  * @method static mixed|array getByTimestamp($datetime) 根据|时间字符串或时间戳|返回传递的开始时间和结束时间
  * @method static mixed|array getBetweenTwoDates($start, $end, $format = 'Y-m-d', $type = 0) 获取两个日期之间的所有日期
+ * @method static mixed|array getYearMonthStamp($y = 0, $m = 0) 获取指定年份和月份的起始和结束时间戳
  */
 class TimeRun extends TimeHelper
 {
