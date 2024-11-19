@@ -475,24 +475,23 @@ class TimeRun extends TimeHelper
      */
     public static function getBetweenTwoDates($start, $end, $format = 'Y-m-d', $type = 0)
     {
-        // 初始化用于存储日期的数组
-        $list = [];
         // 将开始日期转换为时间戳
         $dt_start = self::toTimestamp($start);
         // 将结束日期转换为时间戳
         $dt_end = self::toTimestamp($end);
-        while ($dt_start <= $dt_end) {
+        // 86400表示间隔为一天的秒数
+        $date_range = range($dt_start, $dt_end, 86400);
+        // 将时间戳转换为日期字符串
+        $list = array_map(function ($timestamp) use ($format, $type) {
             // 循环处理每一天,直到结束日期
             if ($type == 0) {
                 // 如果要求返回字符串格式的日期
-                $list[] = date($format, $dt_start);
+                return date($format, $timestamp);
             } else {
                 // 如果要求返回时间戳格式的日期
-                $list[] = strtotime(date($format, $dt_start));
+                return strtotime(date($format, $timestamp));
             }
-            // 将开始日期推进一天
-            $dt_start = strtotime('+1 day', $dt_start);
-        }
+        }, $date_range);
         // 返回包含所有日期的数组
         return $list;
     }
