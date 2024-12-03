@@ -26,7 +26,7 @@ namespace hulang\tool;
  * @method static mixed|string getFileExt($fileName) 获取文件扩展名
  * @method static mixed|string getConvertEncoding($string) 转换字符编码
  */
-class FileHelper
+class FileHelper extends FileMime
 {
     /**
      * 获取文件属性
