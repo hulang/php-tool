@@ -12,7 +12,7 @@ namespace hulang\tool;
  * @method static mixed|string getMime($filename) 获取文件MIME类型
  * @method static mixed|string getAllMime($ext = '') 所有MIME类型
  */
-class FileMime extends FileHelper
+class FileMime
 {
     /**
      * 获取文件MIME类型
@@ -21,7 +21,7 @@ class FileMime extends FileHelper
      */
     public static function getMime($filename)
     {
-        $ext = self::getFileExt($filename);
+        $ext = FileHelper::getFileExt($filename);
         $result = self::getAllMime($ext);
         return $result;
     }
